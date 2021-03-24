@@ -1,4 +1,4 @@
-package com.denchik.demo.repository;
+package com.denchik.demo.model;
 
 import lombok.Getter;
 import lombok.Setter;

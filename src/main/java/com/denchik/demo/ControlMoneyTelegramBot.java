@@ -45,9 +45,12 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = update.getMessage().getText();
             switch (textMessage) {
+                case "hi" :
+                    return new SendMessage(chat_id.toString(),"Your enter hello!");
                 case "/start" :
                     try {
                         execute(new SendMessage(chat_id.toString(),"Hello i can help control your money especially income and expenses"));
+                        System.out.println("I am get a \"/start\" command");
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
