@@ -1,0 +1,15 @@
+package com.denchik.demo.handlers;
+
+public enum BotState {
+    CHOOSE_OPERATION_TYPE,
+    NONE,
+    SET_BALANCE,
+    EDIT_DATE_OPERATION,
+    READY_TO_WRITE,
+    CHOOSE_SOURCE_TYPE,
+    SHOW_HELP_MENU,
+    SETUP_CATEGORY,
+    ADD_NEW_CATEGORY,
+    SHOW_LAST_OPERATIONS,
+    СHOOSE_SETTING
+}

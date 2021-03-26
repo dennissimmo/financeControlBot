@@ -1,11 +1,15 @@
-package com.denchik.demo;
+package com.denchik.demo.bot;
 
-import org.telegram.telegrambots.bots.DefaultBotOptions;
+import com.denchik.demo.model.Category;
+import com.denchik.demo.service.CategoryService;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.context.annotation.Bean;
+import org.springframework.context.annotation.PropertySource;
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
-import org.telegram.telegrambots.meta.api.methods.send.SendMediaGroup;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.send.SendVoice;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -13,19 +17,24 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
-import javax.swing.plaf.basic.BasicSplitPaneUI;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 
+@PropertySource("classpath:application.properties")
 public class ControlMoneyTelegramBot extends TelegramWebhookBot {
+    @Value("${telegrambot.webHookPath}")
     private String webHookPath;
+    @Value("${telegrambot.botToken}")
     private String botToken;
+    @Value("${telegrambot.userName}")
     private String botUserName;
-
-    public ControlMoneyTelegramBot(DefaultBotOptions botOptions) {
+    /*public ControlMoneyTelegramBot(DefaultBotOptions botOptions) {
         super(botOptions);
-    }
+    }*/
+    public ControlMoneyTelegramBot () {
 
+    }
     @Override
     public String getBotPath() {
         return webHookPath;
@@ -41,13 +50,21 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
     }
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived (Update update) {
+
         if (update.getMessage() != null && update.getMessage().hasText()) {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = update.getMessage().getText();
+
             switch (textMessage) {
+                case "hi" :
+                    /*Category category = categoryService.findByCategoryId("Продукты");
+                    System.out.println(category.getName());*/
+                    System.out.println("Inside hi");
+                    return new SendMessage(chat_id.toString(),"Your enter hello!");
                 case "/start" :
                     try {
                         execute(new SendMessage(chat_id.toString(),"Hello i can help control your money especially income and expenses"));
+                        System.out.println("I am get a \"/start\" command");
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
