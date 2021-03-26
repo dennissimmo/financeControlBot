@@ -1,5 +1,22 @@
 package com.denchik.demo.service;
 
-public class UserService {
+import com.denchik.demo.model.User;
+import com.denchik.demo.repository.UserRepository;
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
+@Component
+public class UserService {
+    private final UserRepository userRepository;
+    public UserService (UserRepository userRepository) {
+        this.userRepository = userRepository;
+    }
+    @Transactional(readOnly = true)
+    public User findUserByChat_id (Long chat_id) {
+        return userRepository.findByChatId(chat_id);
+    }
+    @Transactional
+    public User addUser (User user) {
+        return userRepository.save(user);
+    }
 }

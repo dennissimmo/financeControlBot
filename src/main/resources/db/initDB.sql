@@ -1,16 +1,17 @@
 DROP TABLE IF EXISTS person cascade ;
-DROP TABLE IF EXISTS operation;
+DROP TABLE IF EXISTS operation ;
 DROP TABLE IF EXISTS users;
 DROP TABLE IF EXISTS balance;
-DROP TABLE IF EXISTS type_operation;
+DROP TABLE IF EXISTS type_operation ;
 DROP TABLE IF EXISTS category;
+DROP TABLE IF EXISTS type_category;
 DROP TABLE IF EXISTS source_info;
-DROP SEQUENCE IF EXISTS global_seq;
+DROP SEQUENCE IF EXISTS global_seq cascade ;
 CREATE SEQUENCE global_seq START WITH 100000;
 CREATE TABLE users
 (
     id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    chat_id       INTEGER UNIQUE,
+    chat_id       INTEGER UNIQUE NOT NULL,
     first_name    VARCHAR(50),
     last_name     VARCHAR(50),
     username      VARCHAR(50),

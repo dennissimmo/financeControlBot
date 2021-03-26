@@ -13,11 +13,13 @@ import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.StopMessageLiveLocation;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.User;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
+import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -26,25 +28,35 @@ import java.util.Locale;
 @Configuration
 @Log4j2
 public class MessageHandler {
-    private final ControlMoneyTelegramBot botContext;
+   /* private final ControlMoneyTelegramBot botContext;*/
+    private final UserService userService;
     private final CategoryService categoryService;
-    public MessageHandler(ControlMoneyTelegramBot botContext, CategoryService categoryService) {
-        this.botContext = botContext;
+    public MessageHandler(UserService userService, CategoryService categoryService) {
+        /*this.botContext = botContext;*/
+        this.userService = userService;
         this.categoryService = categoryService;
         Category products = categoryService.findByCategoryName("Транспорт");
-        System.out.println(" внедряем Message Hendler");
+        System.out.println("Внедряем Message Hendler");
     }
 
     public BotApiMethod<?> handleUpdate(Update update) {
         if (update.getMessage() != null && update.getMessage().hasText()) {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = update.getMessage().getText();
-
             switch (textMessage) {
                 case "/start" :
                     Message message = update.getMessage();
+                    User telegramUserObj = message.getFrom();
                         log.info("New message from User: {} , chat_id {} with text {}",message.getFrom(),message.getChatId(),message.getText());
-                    break;
+
+                        com.denchik.demo.model.User userFromDB = userService.findUserByChat_id(chat_id);
+                        if ( userFromDB != null) {
+                            return new SendMessage(chat_id,String.format("Hello, your id in Heroku Database = %d",userFromDB.getId()));
+                        } else {
+                            userFromDB = new com.denchik.demo.model.User(message.getChatId(),telegramUserObj.getFirstName(),telegramUserObj.getLastName());
+                            userService.addUser(userFromDB);
+                           return new SendMessage(chat_id,"Вітаю, ви користуєтесь нашим ботом вперше\nВиконуємо реєстрацію:");
+                        }
                     case "hello" :
                     return new SendMessage(chat_id.toString(),"Inside messageHandler");
                 case "/operation" :
@@ -69,6 +81,16 @@ public class MessageHandler {
                 default:
                     return new SendMessage().setText("Not a command").setChatId(chat_id);
             }
+        } else if (update.hasCallbackQuery()) {
+            CallbackQuery callbackQuery = update.getCallbackQuery();
+            log.info(
+                    "CallbackQuery from: {}; " +
+                            "data: {}; " +
+                            "message id: {}",
+                    callbackQuery.getFrom().getUserName(),
+                    callbackQuery.getData(),
+                    callbackQuery.getId()
+            );
         }
         return null;
     }

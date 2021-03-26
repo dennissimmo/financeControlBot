@@ -13,4 +13,5 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findAllByUsername (String username);
+    User findByChatId (Long chat_id);
 }
