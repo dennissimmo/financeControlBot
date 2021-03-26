@@ -17,22 +17,6 @@ CREATE TABLE users
     language_code VARCHAR(20),
     bot_state     VARCHAR(20)
 );
-CREATE TABLE person
-(
-    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name VARCHAR (50) NOT NULL,
-    user_id INTEGER REFERENCES users(id)
-);
-CREATE TABLE type_operation
-(
-    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name VARCHAR UNIQUE
-);
-CREATE TABLE category
-(
-    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name VARCHAR (100) UNIQUE NOT NULL
-);
 CREATE TABLE source_info
 (
     id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -45,12 +29,36 @@ CREATE TABLE balance
     source_info_id INTEGER REFERENCES source_info(id),
     amount DOUBLE PRECISION
 );
+CREATE TABLE person
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR (50) NOT NULL,
+    user_id INTEGER REFERENCES users(id),
+    balance_id INTEGER REFERENCES balance(id)
+);
+CREATE TABLE type_operation
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR UNIQUE
+);
+CREATE TABLE type_category
+(
+    id INTEGER PRIMARY KEY DEFAULT nextVal('global_seq'),
+    name_type VARCHAR (100)
+);
+CREATE TABLE category
+(
+    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    name VARCHAR (100) UNIQUE NOT NULL,
+    type_category_id INTEGER REFERENCES type_category(id)
+);
+
 CREATE TABLE operation
 (
     id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     amount DOUBLE PRECISION,
     note VARCHAR (80),
-    id_category INTEGER REFERENCES category(id),
+    category_id INTEGER REFERENCES category(id),
     is_regular BOOLEAN,
     create_at date NOT NULL,
     raw_text VARCHAR (50) NOT NULL,

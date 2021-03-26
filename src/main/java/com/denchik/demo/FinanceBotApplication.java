@@ -3,7 +3,7 @@ package com.denchik.demo;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 
-@SpringBootApplication
+@SpringBootApplication(scanBasePackages = "com.denchik.demo")
 public class FinanceBotApplication {
 
     public static void main(String[] args) {

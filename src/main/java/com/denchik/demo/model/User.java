@@ -4,12 +4,11 @@ import com.denchik.demo.handlers.BotState;
 import lombok.AllArgsConstructor;
 import lombok.NoArgsConstructor;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import javax.naming.Name;
+import javax.persistence.*;
 
 @Entity
+@Table(name = "users")
 @AllArgsConstructor
 public class User extends AbstractBaseEntity{
     private Integer chat_id;

@@ -13,7 +13,7 @@ import javax.persistence.*;
 @Setter
 
 public class AbstractBaseEntity {
-    public static final int START_SEQ = 100000;
+    public static final int START_SEQ = 0;
 
     @Id
     @SequenceGenerator(name = "global_seq",sequenceName = "global_seq",allocationSize = 1,initialValue = START_SEQ)

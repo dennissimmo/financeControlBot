@@ -31,5 +31,13 @@ public class CategoryService{
     public void addCategory (Category category) {
         categoryRepository.save(category);
     }
+    @Transactional
+    public List<Category> getExpenses () {
+        return categoryRepository.findCategoriesByTypeCategoryByName("Витрати");
+    }
+    @Transactional
+    public List<Category> getIncomes () {
+        return categoryRepository.findCategoriesByTypeCategoryByName("Надходження");
+    }
 
 }
