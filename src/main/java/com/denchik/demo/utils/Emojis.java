@@ -10,8 +10,8 @@ public enum Emojis {
     EXPENSE(EmojiParser.parseToUnicode(":chart_with_downwards_trend:")),
     WARNING(EmojiParser.parseToUnicode(":exclamation:")),
     CANCEL(EmojiParser.parseToUnicode(":no_entry:")),
-    RECORD(EmojiParser.parseToUnicode(":page_facing_up:"));
-
+    RECORD(EmojiParser.parseToUnicode(":page_facing_up:")),
+    EURO(EmojiParser.parseToUnicode(":euro:"));
     private String emojiName;
     @Override
     public String toString () {
