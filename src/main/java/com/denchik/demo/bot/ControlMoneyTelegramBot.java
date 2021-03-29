@@ -39,7 +39,6 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
     public String getBotPath() {
         return webHookPath;
     }
-
     @Override
     public String getBotUsername () {
         return botUserName;
@@ -56,22 +55,10 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             String textMessage = update.getMessage().getText();
 
             switch (textMessage) {
-                case "hi" :
-                    /*Category category = categoryService.findByCategoryId("Продукты");
-                    System.out.println(category.getName());*/
-                    System.out.println("Inside hi");
-                    return new SendMessage(chat_id.toString(),"Your enter hello!");
                 case "/start" :
                     try {
                         execute(new SendMessage(chat_id.toString(),"Hello i can help control your money especially income and expenses"));
                         System.out.println("I am get a \"/start\" command");
-                    } catch (TelegramApiException e) {
-                        e.printStackTrace();
-                    }
-                    break;
-                case "/costs" :
-                    try {
-                        execute(new SendMessage(chat_id.toString(),"List of your expenses: \n<b> Girls - 100$ </b>"));
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
                     }
@@ -105,7 +92,6 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
                     }
                     break;
             }
-
         }
         return null;
     }

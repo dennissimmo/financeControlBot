@@ -14,7 +14,7 @@ public class WebHookController {
     private final MessageHandler messageHandler;
     public WebHookController(MessageHandler messageHandler) {
         this.messageHandler = messageHandler;
-        System.out.println("Внедряем WebHook Controller");
+        System.out.println("Внедряем Message Handler в WebHook Controller");
     }
     /*private final ControlMoneyTelegramBot telegramBot;
     public WebHookController (ControlMoneyTelegramBot telegramBot) {
