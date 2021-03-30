@@ -16,9 +16,9 @@ public class Operation extends AbstractBaseEntity {
     @OneToOne()
     @JoinColumn(name = "source_id",nullable = false)
     private Source source;
-    @OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    /*@OneToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "person_id",nullable = false)
-    private Person person;
+    private Person person;*/
     @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "type_operation_id",nullable = false)
     private TypeOperation typeOperation;
@@ -30,17 +30,6 @@ public class Operation extends AbstractBaseEntity {
     private String raw_text;
     public Operation () {
 
-    }
-    public Operation(Double amount, String note, Category category, Source source, Person person, TypeOperation typeOperation, boolean is_regular, Date create_at, String raw_text) {
-        this.amount = amount;
-        this.note = note;
-        this.category = category;
-        this.source = source;
-        this.person = person;
-        this.typeOperation = typeOperation;
-        this.is_regular = is_regular;
-        this.create_at = create_at;
-        this.raw_text = raw_text;
     }
 
     public Double getAmount() {
@@ -73,14 +62,6 @@ public class Operation extends AbstractBaseEntity {
 
     public void setSource(Source source) {
         this.source = source;
-    }
-
-    public Person getPerson() {
-        return person;
-    }
-
-    public void setPerson(Person person) {
-        this.person = person;
     }
 
     public TypeOperation getTypeOperation() {

@@ -8,5 +8,5 @@ VALUES ('Продукти',100000),
        ('Ігри',100000),
        ('Стипендія',100001),
        ('Зарплата',100001);
-INSERT INTO users (chat_id) VALUES (795182716)
+INSERT INTO source_info (type_source) VALUES ('Готівка'),('Кредитна карта');
 

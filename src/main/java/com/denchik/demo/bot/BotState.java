@@ -1,0 +1,26 @@
+package com.denchik.demo.bot;
+
+public enum BotState {
+    NONE,
+    CHOOSE_OPERATION_TYPE,
+    SET_BALANCE,
+    EDIT_DATE_OPERATION,
+    WAIT_OPERATION,
+    CHOOSE_SOURCE_TYPE,
+    SHOW_HELP_MENU,
+    SETUP_CATEGORY,
+    ADD_NEW_CATEGORY,
+    SHOW_LAST_OPERATIONS,
+    СHOOSE_SETTING,
+    ASK_BALANCE,
+    CONFIRM_BALANCE_SET,
+    START_STATE,
+    DELETE_CONNECTION;
+    private static BotState[] botStates;
+    public static BotState getBotStateById (int id) {
+        if (botStates == null) {
+            botStates = BotState.values();
+        }
+        return botStates[id];
+    }
+}

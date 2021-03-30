@@ -11,19 +11,20 @@ import javax.persistence.Table;
 @Table(name = "source_info")
 public class Source extends AbstractBaseEntity{
     @Column(name = "type_source")
-    private String type_source;
+    private String typeSource;
     public Source() {
 
     }
-    public Source(String type_source) {
-        this.type_source = type_source;
+
+    public Source(String typeSource) {
+        this.typeSource = typeSource;
     }
 
-    public String getType_source() {
-        return type_source;
+    public String getTypeSource() {
+        return typeSource;
     }
 
-    public void setType_source(String type_source) {
-        this.type_source = type_source;
+    public void setTypeSource(String typeSource) {
+        this.typeSource = typeSource;
     }
 }
