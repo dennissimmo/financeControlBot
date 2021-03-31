@@ -1,5 +1,6 @@
 package com.denchik.demo.bot;
 
+import com.denchik.demo.bot.handlers.callbackquery.CallbackQueryFacade;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;
@@ -23,10 +24,12 @@ public class TelegramFacade {
     private UserService userService;
     private BotStateContext botStateContext;
     private ReplyMessagesService replyMessagesService;
-    public TelegramFacade(UserService userService,ReplyMessagesService replyMessagesService,BotStateContext botStateContext) {
+    private CallbackQueryFacade callbackQueryFacade;
+    public TelegramFacade(UserService userService,ReplyMessagesService replyMessagesService,BotStateContext botStateContext, CallbackQueryFacade callbackQueryFacade) {
         this.userService = userService;
         this.replyMessagesService =replyMessagesService;
         this.botStateContext = botStateContext;
+        this.callbackQueryFacade = callbackQueryFacade;
         System.out.println("Внедряем User Service в Telegram Facade");
     }
     /**
@@ -54,6 +57,7 @@ public class TelegramFacade {
                     callbackQuery.getData(),
                     callbackQuery.getId()
             );
+            replyMessage = callbackQueryFacade.processCallbackQuery(callbackQuery);
             //replyMessage = processCallbackQuery(callbackQuery,update);
         } else {
             log.error("Incorrect update from Telegram, can't handle update");
@@ -143,6 +147,7 @@ public class TelegramFacade {
         }
         return reply;
     }
+
     public SendMessage getConfirmationDeleteKeyboard (Message message) {
         SendMessage replyMessage = new SendMessage().setText(replyMessagesService.getReplyText("reply.useRelation.confirmation.delete",Emojis.WARNING));
         replyMessage.setChatId(message.getChatId());

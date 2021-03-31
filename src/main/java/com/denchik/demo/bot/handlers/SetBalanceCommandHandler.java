@@ -36,7 +36,7 @@ public class SetBalanceCommandHandler implements InputMessageHandler {
         if (user.getState_id().equals(BotState.SET_BALANCE.ordinal()))
         {
             user.setState_id(BotState.ASK_BALANCE);
-            System.out.println("User state inside handle functuion " + user.getState_id());
+            System.out.println("User state inside handle function " + user.getState_id());
             userService.saveUser(user);
         }
         return processUserInput(message);

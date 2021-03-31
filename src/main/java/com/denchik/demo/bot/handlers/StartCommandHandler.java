@@ -32,7 +32,7 @@ public class StartCommandHandler implements InputMessageHandler{
         if (currentUser != null) {
             Balance userBalance = currentUser.getBalance();
             if (userBalance != null) {
-                currentUser.setState_id(BotState.NONE);
+                currentUser.setState_id(BotState.WAIT_OPERATION);
                 reply = replyMessagesService.getReplyMessage(message.getChatId(),"reply.command.start.authorized.instruction",currentUser.getFirst_name());
                 userService.saveUser(currentUser);
             } else {
