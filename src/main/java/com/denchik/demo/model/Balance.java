@@ -33,4 +33,11 @@ public class Balance extends AbstractBaseEntity{
     public void setSource(Source source) {
         this.source = source;
     }
+
+    public void upBalance (double amount) {
+        this.amount += amount;
+    }
+    public void downBalance (double amount) {
+        this.amount -= amount;
+    }
 }

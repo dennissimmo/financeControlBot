@@ -8,16 +8,8 @@ DROP TABLE IF EXISTS type_category;
 DROP TABLE IF EXISTS source_info;
 DROP SEQUENCE IF EXISTS global_seq cascade ;
 CREATE SEQUENCE global_seq START WITH 100000;
-CREATE TABLE users
-(
-    id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    chat_id       INTEGER UNIQUE NOT NULL,
-    first_name    VARCHAR(50),
-    last_name     VARCHAR(50),
-    username      VARCHAR(50),
-    language_code VARCHAR(20),
-    bot_state     VARCHAR(20)
-);
+DROP SEQUENCE IF EXISTS hibernate_sequence cascade ;
+CREATE SEQUENCE hibernate_sequence START 1;
 CREATE TABLE source_info
 (
     id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -30,13 +22,19 @@ CREATE TABLE balance
     source_info_id INTEGER REFERENCES source_info(id),
     amount DOUBLE PRECISION
 );
-CREATE TABLE person
+CREATE TABLE users
 (
-    id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
-    name VARCHAR (50) NOT NULL,
-    user_id INTEGER REFERENCES users(id),
+    id            INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
+    chat_id       INTEGER UNIQUE NOT NULL,
+    first_name    VARCHAR(50),
+    last_name     VARCHAR(50),
+    username      VARCHAR(50),
+    language_code VARCHAR(20),
+    bot_state     INTEGER,
     balance_id INTEGER REFERENCES balance(id)
 );
+
+
 CREATE TABLE type_operation
 (
     id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -61,9 +59,9 @@ CREATE TABLE operation
     note VARCHAR (80),
     category_id INTEGER REFERENCES category(id),
     is_regular BOOLEAN,
-    create_at date NOT NULL,
+    create_at timestamp,
     raw_text VARCHAR (50) NOT NULL,
     type_operation_id INTEGER REFERENCES type_operation(id),
-    person_id INTEGER REFERENCES person(id),
+    user_id INTEGER REFERENCES users(id),
     source_id INTEGER REFERENCES source_info(id)
 );

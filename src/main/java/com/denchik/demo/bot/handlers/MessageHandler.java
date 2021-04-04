@@ -66,7 +66,7 @@ public class MessageHandler {
                 com.denchik.demo.model.User currentUser = userService.findUserByChat_id(chat_id);
                 operation = new Operation();
                 operation.setAmount(amountOperation);
-                log.info("Set amount operation to {0}", operation.getAmount());
+                log.info("Set amount operation to {}", operation.getAmount());
 
                 log.info("New message from User: {} , chat_id {} with text {}",message.getFrom(),message.getChatId(),message.getText());
                return getChooseOperationReplyInlineKeyboard(update);

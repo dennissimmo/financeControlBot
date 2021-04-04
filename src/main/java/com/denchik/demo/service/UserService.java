@@ -23,4 +23,9 @@ public class UserService {
     public void deleteUserByChat_id (Long chat_id) {
         userRepository.deleteByChatId(chat_id);
     }
+    @Transactional
+    public void saveUser (User user){
+        userRepository.save(user);
+    }
+
 }

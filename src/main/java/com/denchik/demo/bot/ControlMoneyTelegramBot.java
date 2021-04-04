@@ -10,6 +10,7 @@ import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -94,6 +95,19 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             }
         }
         return null;
+    }
+    public void editMessage (Long chat_id, Integer messageID, String textMessage, InlineKeyboardMarkup inlineKeyboardMarkup) {
+        BotApiMethod editedReply = null;
+        EditMessageText et = new EditMessageText()
+                .setChatId(chat_id)
+                .setMessageId(messageID)
+                .setReplyMarkup(inlineKeyboardMarkup)
+                .setText(textMessage);
+        try {
+            execute(et);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
     }
     private ReplyKeyboardMarkup getMenuBot () {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
