@@ -1,8 +1,11 @@
 package com.denchik.demo.bot.handlers;
 
 import com.denchik.demo.bot.BotState;
+import com.denchik.demo.model.Operation;
 import com.denchik.demo.model.User;
+import com.denchik.demo.service.OperationService;
 import com.denchik.demo.service.ReplyMessagesService;
+import com.denchik.demo.service.SourceService;
 import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;
 import org.springframework.stereotype.Component;
@@ -20,9 +23,13 @@ import java.util.regex.Pattern;
 public class AddOperationHandler implements InputMessageHandler {
     private UserService userService;
     private ReplyMessagesService replyMessagesService;
-    public AddOperationHandler(UserService userService,ReplyMessagesService replyMessagesService) {
+    private OperationService operationService;
+    private SourceService sourceService;
+    public AddOperationHandler(UserService userService,ReplyMessagesService replyMessagesService,OperationService operationService,SourceService sourceService) {
+        this.operationService = operationService;
         this.replyMessagesService = replyMessagesService;
         this.userService = userService;
+        this.sourceService = sourceService;
     }
 
     @Override
@@ -45,25 +52,27 @@ public class AddOperationHandler implements InputMessageHandler {
         SendMessage reply = null;
         if (botState.equals(BotState.SET_AMOUNT_OPERATION)) {
             if (isCorrectFormatOperation(userInput)) {
-                reply = getChooseOperationReplyInlineKeyboard(message);
-                currentUser.setState_id(BotState.CHOOSE_OPERATION_TYPE);
+                Operation operation = new Operation(Double.parseDouble(userInput),userInput,sourceService.getSourceByTypeSource("Готівка"),currentUser);
+                currentUser.setState_id(BotState.WAIT_OPERATION);
+                operationService.addOperation(operation);
+                reply = getChooseOperationReplyInlineKeyboard(message,operation.getId());
                 userService.saveUser(currentUser);
             }
         }
         return reply;
     }
-    public SendMessage getChooseOperationReplyInlineKeyboard (Message message) {
+    public SendMessage getChooseOperationReplyInlineKeyboard (Message message, int idOperation) {
         Long chat_id = message.getChatId();
         SendMessage sendMessage = replyMessagesService.getReplyMessage(chat_id,"reply.category.chooseTypeOperation", Emojis.RECORD);
         InlineKeyboardMarkup chooseOperationTypeMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton incomes = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.incomes",Emojis.INCOME)).setCallbackData("Income");
-        InlineKeyboardButton expenses = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.expenses",Emojis.EXPENSE)).setCallbackData("Expense");
-        InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData("Cancel");
+        InlineKeyboardButton incomes = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.incomes",Emojis.INCOME)).setCallbackData(String.format("%s|%d","Income",idOperation));
+        InlineKeyboardButton expenses = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.expenses",Emojis.EXPENSE)).setCallbackData(String.format("%s|%d","Expense",idOperation));
+        //InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData(String.format("%s|%d","Cancel",idOperation));
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         row1.add(incomes);
         row1.add(expenses);
-        row2.add(cancel);
+        //row2.add(cancel);
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         buttons.add(row1);
         buttons.add(row2);

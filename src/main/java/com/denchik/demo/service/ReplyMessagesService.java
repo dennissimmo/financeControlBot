@@ -4,6 +4,7 @@ import org.springframework.stereotype.Service;
 import org.telegram.telegrambots.meta.api.methods.AnswerCallbackQuery;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import com.denchik.demo.utils.Emojis;
+import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 @Service
 public class ReplyMessagesService {
@@ -32,7 +33,9 @@ public class ReplyMessagesService {
     public SendMessage getWarningReplyMessage(long chatId, String replyMessage) {
         return new SendMessage(chatId, getEmojiReplyText(replyMessage, Emojis.NOTIFICATION_MARK_FAILED));
     }
+
 */
+
     public AnswerCallbackQuery getPopUpAnswer(String callbackId, String text) {
         AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();
         answerCallbackQuery.setCallbackQueryId(callbackId);

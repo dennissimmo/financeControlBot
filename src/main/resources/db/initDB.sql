@@ -8,6 +8,8 @@ DROP TABLE IF EXISTS type_category;
 DROP TABLE IF EXISTS source_info;
 DROP SEQUENCE IF EXISTS global_seq cascade ;
 CREATE SEQUENCE global_seq START WITH 100000;
+DROP SEQUENCE IF EXISTS hibernate_sequence cascade ;
+CREATE SEQUENCE hibernate_sequence START 1;
 CREATE TABLE source_info
 (
     id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
@@ -57,7 +59,7 @@ CREATE TABLE operation
     note VARCHAR (80),
     category_id INTEGER REFERENCES category(id),
     is_regular BOOLEAN,
-    create_at date NOT NULL,
+    create_at timestamp,
     raw_text VARCHAR (50) NOT NULL,
     type_operation_id INTEGER REFERENCES type_operation(id),
     user_id INTEGER REFERENCES users(id),

@@ -13,9 +13,11 @@ public enum BotState {
     SHOW_LAST_OPERATIONS,
     СHOOSE_SETTING,
     ASK_BALANCE,
+    GET_BALANCE,
     SET_AMOUNT_OPERATION,
     CONFIRM_BALANCE_SET,
     START_STATE,
+    LIST_OPERATION,
     DELETE_CONNECTION;
     private static BotState[] botStates;
     public static BotState getBotStateById (int id) {

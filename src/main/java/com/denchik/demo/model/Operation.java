@@ -1,6 +1,7 @@
 package com.denchik.demo.model;
 
 import javax.persistence.*;
+import java.sql.Timestamp;
 import java.util.Date;
 
 @Entity
@@ -24,14 +25,27 @@ public class Operation extends AbstractBaseEntity {
     private TypeOperation typeOperation;
     @Column(name = "is_regular")
     private boolean is_regular;
+    @Temporal(TemporalType.TIMESTAMP)
     @Column(name = "create_at",nullable = false)
-    private Date create_at;
+    private Date createAt;
     @Column(name = "raw_text",nullable = false)
     private String raw_text;
+    @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
+    @JoinColumn(name = "user_id")
+    private User user;
+    @Override
+    public String toString () {
+        return "Amount : " + amount + "User : " + user.getFirst_name() + "Source : " + source.getTypeSource() + "Type : " + typeOperation.getName();
+    }
     public Operation () {
 
     }
-
+    public Operation (double amount,String raw_text,Source source,User user) {
+        this.amount = amount;
+        this.raw_text = raw_text;
+        this.source = source;
+        this.user = user;
+    }
     public Double getAmount() {
         return amount;
     }
@@ -80,13 +94,6 @@ public class Operation extends AbstractBaseEntity {
         this.is_regular = is_regular;
     }
 
-    public Date getCreate_at() {
-        return create_at;
-    }
-
-    public void setCreate_at(Date create_at) {
-        this.create_at = create_at;
-    }
 
     public String getRaw_text() {
         return raw_text;
@@ -94,5 +101,13 @@ public class Operation extends AbstractBaseEntity {
 
     public void setRaw_text(String raw_text) {
         this.raw_text = raw_text;
+    }
+
+    public Date getCreateAt() {
+        return createAt;
+    }
+
+    public void setCreateAt(Date createAt) {
+        this.createAt = createAt;
     }
 }

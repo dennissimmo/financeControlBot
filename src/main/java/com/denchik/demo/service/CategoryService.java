@@ -20,6 +20,10 @@ public class CategoryService{
         this.categoryRepository = categoryRepository;
     }
     @Transactional(readOnly = true)
+    public Category findCategoryById (Integer id) {
+        return categoryRepository.findCategoryById(id);
+    }
+    @Transactional(readOnly = true)
    public Category findByCategoryName (String name) {
         return categoryRepository.findCategoryByName(name);
     }

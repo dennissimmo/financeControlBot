@@ -3,6 +3,7 @@ package com.denchik.demo.model;
 import com.denchik.demo.bot.BotState;
 
 import javax.persistence.*;
+import java.util.List;
 
 @Entity
 @Table(name = "users")
@@ -18,7 +19,6 @@ public class User extends AbstractBaseEntity{
     @ManyToOne
     @JoinColumn(name = "balance_id",nullable = false)
     private Balance balance;
-
     public User () {
 
     }

@@ -6,7 +6,9 @@ import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
+import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
@@ -104,6 +106,12 @@ public class TelegramFacade {
                         userService.addUser(userFromDB);
                         return new SendMessage(message.getChatId(), "Вітаю, ви користуєтесь нашим ботом вперше\nВиконуємо реєстрацію:");
                     }*/
+                    break;
+                case "/list" :
+                    botState = BotState.LIST_OPERATION;
+                    break;
+                case "/balance" :
+                    botState = BotState.GET_BALANCE;
                     break;
                 case "/setbal" :
                     botState = BotState.SET_BALANCE;
