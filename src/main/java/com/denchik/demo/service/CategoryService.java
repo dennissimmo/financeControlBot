@@ -4,6 +4,7 @@ import com.denchik.demo.model.Category;
 import com.denchik.demo.repository.CategoryRepository;
 import org.jvnet.hk2.annotations.Service;
 import org.springframework.context.annotation.Bean;
+import org.springframework.data.jpa.repository.Query;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -34,6 +35,10 @@ public class CategoryService{
     @Transactional(readOnly = true)
     public void addCategory (Category category) {
         categoryRepository.save(category);
+    }
+    @Transactional(readOnly = true)
+    public List<Category> findDistinctOperationCategoryByUserAndTypeOperationName(int user_id, String nameOperationType) {
+        return categoryRepository.findDistinctOperationCategoryByUserAndTypeOperationName(user_id,nameOperationType);
     }
     @Transactional
     public List<Category> getExpenses () {

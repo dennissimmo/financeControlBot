@@ -5,11 +5,17 @@ import com.denchik.demo.repository.UserRepository;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.List;
+
 @Component
 public class UserService {
     private final UserRepository userRepository;
     public UserService (UserRepository userRepository) {
         this.userRepository = userRepository;
+    }
+    @Transactional(readOnly = true)
+    public List<User> findAll () {
+        return userRepository.findAll();
     }
     @Transactional(readOnly = true)
     public User findUserByChat_id (Long chat_id) {

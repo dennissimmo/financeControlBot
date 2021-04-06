@@ -48,7 +48,8 @@ public class TelegramFacade {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = message.getText();
             log.info("New message from User: {} , chat_id {} with text {}",message.getFrom(),message.getChatId(),message.getText());
-            replyMessage = handleInputMessageText(message);
+            replyMessage =
+                    handleInputMessageText(message);
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             log.info(
@@ -113,6 +114,9 @@ public class TelegramFacade {
                 case "/balance" :
                     botState = BotState.GET_BALANCE;
                     break;
+                case "/report" :
+                    botState = BotState.REPORT;
+                    break;
                 case "/setbal" :
                     botState = BotState.SET_BALANCE;
                     break;
@@ -122,9 +126,6 @@ public class TelegramFacade {
                     break;
                     /*log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), message.getChatId(), message.getText());
                     return getConfirmationDeleteKeyboard(update);*/
-                case "/report":
-                   botState = BotState.WAIT_OPERATION;
-                   break;
                 default:
                     user = userService.findUserByChat_id(message.getChatId());
                     if (user.getState_id() != null) {

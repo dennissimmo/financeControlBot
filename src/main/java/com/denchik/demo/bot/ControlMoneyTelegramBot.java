@@ -151,6 +151,13 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
         message.setReplyMarkup(markup);
         return message;
     }
+    public void executeSendMessage (SendMessage sendMessage) {
+        try {
+            execute(sendMessage);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
     public void setWebHookPath(String webHookPath) {
         this.webHookPath = webHookPath;
     }

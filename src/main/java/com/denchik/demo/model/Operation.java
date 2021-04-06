@@ -35,7 +35,7 @@ public class Operation extends AbstractBaseEntity {
     private User user;
     @Override
     public String toString () {
-        return "Amount : " + amount + "User : " + user.getFirst_name() + "Source : " + source.getTypeSource() + "Type : " + typeOperation.getName();
+        return "Amount : " + amount + " User : " + user.getFirst_name() + " Source : " + source.getTypeSource() + " Type : " + typeOperation.getName();
     }
     public Operation () {
 

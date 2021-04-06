@@ -13,10 +13,13 @@ public enum Emojis {
     CANCEL(EmojiParser.parseToUnicode(":no_entry:")),
     EMPTYCANCEL(EmojiParser.parseToUnicode(":no_entry_sign:")),
     SCROLL(EmojiParser.parseToUnicode(":scroll:")),
+    PUSHPIN(EmojiParser.parseToUnicode(":pushpin:")),
+    PENCIL(EmojiParser.parseToUnicode(":pencil2:")),
     RECORD(EmojiParser.parseToUnicode(":page_facing_up:")),
     DOLLAR(EmojiParser.parseToUnicode(":dollar:")),
     BANK(EmojiParser.parseToUnicode(":bank:")),
     BACK(EmojiParser.parseToUnicode(":back:")),
+    HEART(EmojiParser.parseToUnicode(":heart:")),
     WRITINGHANDLE(EmojiParser.parseToUnicode(":writing_hand:")),
     EURO(EmojiParser.parseToUnicode(":euro:"));
     private String emojiName;
