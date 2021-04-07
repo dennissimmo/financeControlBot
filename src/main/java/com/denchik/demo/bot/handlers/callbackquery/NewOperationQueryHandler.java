@@ -144,9 +144,9 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 }
                 System.out.println("Type category : " + category.getTypeCategory().getName_type() + replyMessagesService.getReplyText("reply.typeOperation.incomes").trim());
                 if (operation.getTypeOperation().getName().equals("EXPENSE")) {
-                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted),cancelOperation(idHandledOperation));
+                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 } else {
-                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.income", operation.getAmount(),category.getName(),dateOperationFormatted),cancelOperation(idHandledOperation));
+                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.income", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 }
                 // Change balance after operation added
                 Balance userBalance = currentUser.getBalance();
