@@ -5,6 +5,7 @@ import com.denchik.demo.model.*;
 import com.denchik.demo.service.*;
 import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -75,7 +76,13 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
 
     @Override
     public List<String> getHandlerQueryType() {
-        return List.of(INCOME,EXPENSE,CANCEL,BACK,CATEGORY);
+        List<String> availableQuery = new ArrayList<>();
+        availableQuery.add(INCOME);
+        availableQuery.add(EXPENSE);
+        availableQuery.add(CANCEL);
+        availableQuery.add(BACK);
+        availableQuery.add(CATEGORY);
+        return availableQuery;
     }
     public SendMessage processCallback (CallbackQuery callbackQuery) {
         Integer idHandledOperation = Integer.parseInt(parseQueryDataService.getIdOperationFromChooseTypeOperationQuery(callbackQuery));
