@@ -110,4 +110,11 @@ public class Operation extends AbstractBaseEntity {
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
     }
+    public static boolean isExpense (Operation operation) {
+        if (operation.getTypeOperation().getName().equals("EXPENSE")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
 }

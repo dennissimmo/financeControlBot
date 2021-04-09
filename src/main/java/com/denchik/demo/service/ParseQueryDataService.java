@@ -15,4 +15,7 @@ public class ParseQueryDataService {
     public String getLocaleTagFromChooseLanguageQuery (CallbackQuery callbackQuery) {
         return callbackQuery.getData().split("\\|")[1];
     }
+    public String getOperationDescription (CallbackQuery callbackQuery) {
+        return callbackQuery.getData().split("\\|")[3];
+    }
 }

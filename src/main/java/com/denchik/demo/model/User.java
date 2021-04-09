@@ -16,7 +16,7 @@ public class User extends AbstractBaseEntity{
     private String language_code;
     @Column(name = "bot_state")
     private Integer state_id;
-    @ManyToOne
+    @ManyToOne  (cascade = CascadeType.ALL)
     @JoinColumn(name = "balance_id",nullable = false)
     private Balance balance;
     public User () {
@@ -102,7 +102,8 @@ public class User extends AbstractBaseEntity{
                 " chat_id : " + chatId +
                 " user_name : " + username +
                 " fist_name : " + first_name +
-                " bot_state : " + BotState.getBotStateById(state_id);
+                " bot_state : " + BotState.getBotStateById(state_id) +
+                " locale: " + language_code;
     }
 
     public Long getChatId() {

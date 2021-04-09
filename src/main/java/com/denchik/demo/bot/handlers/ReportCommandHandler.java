@@ -46,7 +46,11 @@ public class ReportCommandHandler implements InputMessageHandler{
         response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.income", Emojis.INCOME)).append(String.format(": %.2f \n",operationService.sumAmountOperationsByTypeOperation(incomeType,currentUser)) + "</b>");
         List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(incomeType,currentUser);
         List<Category> uniqueCategories = incomeOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
-        uniqueCategories.forEach(category -> response.append(String.format("\n    <code>%s %s %.2f</code> \n",replyMessagesService.getReplyText("emojis.empty",Emojis.PUSHPIN),category.getName(),operationService.sumAmountOperationsByCategory(category,currentUser))));
+        for (Category category : uniqueCategories) {
+            if (category != null) {
+                response.append(String.format("\n    <code>%s %s %.2f</code> \n",replyMessagesService.getReplyText("emojis.empty",Emojis.PUSHPIN),category.getName(),operationService.sumAmountOperationsByCategory(category,currentUser)));
+            }
+        }
         List<Operation> expenseOperations = operationService.getUserOperations(currentUser).stream().filter(operation -> operation.getTypeOperation().getName().equalsIgnoreCase("Expense")).collect(Collectors.toList());
         List<Category> expenseCategories = expenseOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
         //List<Category> expenseCategories = categoryService.findDistinctOperationCategoryByUserAndTypeOperationName(currentUser.getId(),"EXPENSE");

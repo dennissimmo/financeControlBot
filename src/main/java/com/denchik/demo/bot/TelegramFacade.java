@@ -112,7 +112,6 @@ public class TelegramFacade {
                     break;
                 case "/delete":
                     botState = BotState.DELETE_CONNECTION;
-                    //reply = getConfirmationDeleteKeyboard(message);
                     break;
                 case "/lang" :
                     botState = BotState.LANGUAGE_CHOOSE;
@@ -142,47 +141,11 @@ public class TelegramFacade {
         return reply;
     }
 
-    public SendMessage getConfirmationDeleteKeyboard (Message message) {
-        SendMessage replyMessage = new SendMessage().setText(replyMessagesService.getReplyText("reply.useRelation.confirmation.delete",Emojis.WARNING));
-        replyMessage.setChatId(message.getChatId());
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        List<InlineKeyboardButton> button1 = new ArrayList<>();
-        InlineKeyboardButton yesButton = new InlineKeyboardButton().setText("Так");
-        InlineKeyboardButton noButton = new InlineKeyboardButton().setText("Ні");
-        yesButton.setCallbackData("Yes");
-        noButton.setCallbackData("No");
-        button1.add(yesButton);
-        button1.add(noButton);
-        buttons.add(button1);
-        markup.setKeyboard(buttons);
-        replyMessage.setReplyMarkup(markup);
-        return replyMessage;
-    }
         private boolean isOperationAmount (String messageText) {
             String regex = "\\d+";
             Pattern digits = Pattern.compile(regex);
             boolean isOperationText = digits.matcher(messageText).matches();
             return isOperationText;
         }
-        public SendMessage getChooseOperationReplyInlineKeyboard (Message message) {
-        Long chat_id = message.getChatId();
-        SendMessage sendMessage = replyMessagesService.getReplyMessage(chat_id,"reply.category.chooseTypeOperation",Emojis.RECORD);
-        InlineKeyboardMarkup chooseOperationTypeMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton incomes = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.incomes",Emojis.INCOME)).setCallbackData("Income");
-        InlineKeyboardButton expenses = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.expenses",Emojis.EXPENSE)).setCallbackData("Expense");
-        InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData("Cancel");
-        List<InlineKeyboardButton> row1 = new ArrayList<>();
-        List<InlineKeyboardButton> row2 = new ArrayList<>();
-        row1.add(incomes);
-        row1.add(expenses);
-        row2.add(cancel);
-        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        buttons.add(row1);
-        buttons.add(row2);
-        chooseOperationTypeMarkup.setKeyboard(buttons);
-        sendMessage.setReplyMarkup(chooseOperationTypeMarkup);
-        return sendMessage;
-    }
 
 }

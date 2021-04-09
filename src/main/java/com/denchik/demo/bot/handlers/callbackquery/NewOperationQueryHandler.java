@@ -114,7 +114,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 Balance balance = currentUser.getBalance();
                 String replyCancel = callbackQuery.getMessage().getText() + "\n - \n" + replyMessagesService.getReplyText("reply.operation.cancel.canceled",Emojis.EMPTYCANCEL);
                 controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyCancel,null);
-                if (isExpense(operation)) {
+                if (Operation.isExpense(operation)) {
                     balance.upBalance(operation.getAmount());
                 } else {
                     balance.downBalance(operation.getAmount());
@@ -164,13 +164,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         }
         return null;
     }
-    public boolean isExpense (Operation operation) {
-        if (operation.getTypeOperation().getName().equals("EXPENSE")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     public void displayOperationList (List<Operation> userOperations) {
         for(Operation op : userOperations) {
             if (op.getTypeOperation() != null) {

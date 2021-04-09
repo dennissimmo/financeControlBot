@@ -16,12 +16,16 @@ import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 
 @Log4j2
 @Component
 public class ListCommandHandler implements InputMessageHandler{
+    private final SimpleDateFormat DAY_MONTH_YEAR = new SimpleDateFormat("dd.MM.yyyy");
+    private final String INCOME = "INCOME";
+    private final String EXPENSE = "EXPENSE";
     private ReplyMessagesService replyMessagesService;
     private UserService userService;
     private OperationService operationService;
@@ -63,7 +67,7 @@ public class ListCommandHandler implements InputMessageHandler{
             reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.empty.list",Emojis.SCROLL);
         } else {
             reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.list",Emojis.SCROLL);
-            reply.setReplyMarkup(getListOperations(incomeOperations));
+            reply.setReplyMarkup(getListOperations(userOperations));
         }
         List<Operation> monthNumbers = operationService.getOperationPerNumberMonth(4);
         monthNumbers.forEach(month -> System.out.println(month.toString()));
@@ -80,7 +84,7 @@ public class ListCommandHandler implements InputMessageHandler{
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         for (int i = 0; i < operations.size(); i++) {
             Operation currentOperation = operations.get(i);
-            InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%.2f %s %s",currentOperation.getAmount(),currentOperation.getCategory().getName(),currentOperation.getCreateAt())).setCallbackData(String.format("operation|%d|%s",currentOperation.getId(),currentOperation.getCategory().getName()));
+            InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s %s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName()));
             List<InlineKeyboardButton> listButton = new ArrayList<>();
             listButton.add(button);
             buttons.add(listButton);
@@ -88,5 +92,15 @@ public class ListCommandHandler implements InputMessageHandler{
         markup.setKeyboard(buttons);
         // String chat_ids = update.getMessage().getChatId().toString();
         return markup;
+    }
+    public String addSignForOperation (Operation operation) {
+        TypeOperation typeOperation  = operation.getTypeOperation();
+        if (typeOperation.getName().equals(EXPENSE)) {
+            return String.format("- %.2f",operation.getAmount());
+        }
+        if (typeOperation.getName().equals(INCOME)) {
+            return String.format("+ %.2f",operation.getAmount());
+        }
+        return "";
     }
 }

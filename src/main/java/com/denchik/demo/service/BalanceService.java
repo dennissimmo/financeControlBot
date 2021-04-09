@@ -24,5 +24,7 @@ public class BalanceService {
     public void saveBalance (Balance balance){
         balanceRepository.save(balance);
     }
+    @Transactional
+    public void deleteBalanceById (Integer balanceID) {balanceRepository.deleteById(balanceID);}
 }
 

@@ -35,5 +35,5 @@ public interface OperationRepository extends JpaRepository<Operation,Long> {
     // @Query(value = "SELECT date_part('month',create_at)",nativeQuery = true)
     List<Operation> numberOfMonth (int numberOfMonth);
     //@Query(value = "SELECT * FROM Operation WHERE date_part('month',create_at) = 5")
-
+    void deleteAllByUserId (Integer userID);
 }

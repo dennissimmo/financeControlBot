@@ -75,5 +75,6 @@ public class OperationService {
     public void deleteOperation (Operation operation) {
         operationRepository.delete(operation);
     }
-
+    @Transactional
+    public void deleteAllOperationByUserID (Integer userID) {operationRepository.deleteAllByUserId(userID);}
 }

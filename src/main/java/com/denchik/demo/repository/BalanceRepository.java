@@ -12,4 +12,5 @@ import java.util.List;
 
 public interface BalanceRepository extends JpaRepository<Balance,Long> {
     List<Balance> findAllByOrderByAmountAsc();
+    void deleteById (Integer balanceID);
 }
