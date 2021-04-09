@@ -6,6 +6,8 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import com.denchik.demo.utils.Emojis;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
+import java.util.Locale;
+
 @Service
 public class ReplyMessagesService {
 
@@ -25,6 +27,9 @@ public class ReplyMessagesService {
 
     public SendMessage getWarningReplyMessage(long chatId, String replyMessage) {
         return new SendMessage(chatId, getEmojiReplyText(replyMessage, Emojis.WARNING));
+    }
+    public void setLocaleMessageService(String localeTag) {
+        localeMessageService.setLocale(Locale.forLanguageTag(localeTag));
     }
     /*public SendMessage getSuccessReplyMessage(long chatId, String replyMessage) {
         return new SendMessage(chatId, getEmojiReplyText(replyMessage, Emojis.SUCCESS_MARK));

@@ -24,7 +24,7 @@ public class BotStateContext {
     }
 
     private InputMessageHandler findMessageHandler(BotState currentState) {
-        if (currentState == BotState.START_STATE) {
+        if (isStartState(currentState)) {
             return messageHandlers.get(BotState.START_STATE);
         }
         if (isBalanceState(currentState)) {
@@ -45,6 +45,16 @@ public class BotStateContext {
             case SET_BALANCE:
             case ASK_BALANCE:
             case CONFIRM_BALANCE_SET:
+                return true;
+            default:
+                return false;
+        }
+    }
+    private boolean isStartState (BotState state) {
+        switch (state) {
+            case START_STATE:
+            case LANGUAGE_CHOOSE:
+            case ASK_LOCALE:
                 return true;
             default:
                 return false;

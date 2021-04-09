@@ -32,7 +32,13 @@ public class User extends AbstractBaseEntity{
         this.first_name = first_name;
         this.last_name = last_name;
     }
-
+    public User(Long chatId, String first_name, String last_name, String username,Integer state_id) {
+        this.chatId = chatId;
+        this.first_name = first_name;
+        this.last_name = last_name;
+        this.username = username;
+        this.state_id = state_id;
+    }
     public User(Long chatId, String first_name, String last_name, String username, String language_code, Integer state_id) {
         this.chatId = chatId;
         this.first_name = first_name;

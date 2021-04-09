@@ -35,6 +35,7 @@ public class AddOperationHandler implements InputMessageHandler {
     @Override
     public SendMessage handle(Message message) {
         User user = userService.findUserByChat_id(message.getChatId());
+        replyMessagesService.setLocaleMessageService(user.getLanguage_code());
         if (user.getState_id().equals(BotState.WAIT_OPERATION.ordinal()))
         {
             user.setState_id(BotState.SET_AMOUNT_OPERATION);

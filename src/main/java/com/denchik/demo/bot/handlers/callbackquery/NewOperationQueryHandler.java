@@ -71,6 +71,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         final long chat_id = callbackQuery.getMessage().getChatId();
         final int messageId = callbackQuery.getMessage().getMessageId(); // Need for change message with keyboard in future
         log.info("Callback query data {}",callbackQuery.getData());
+
         return processCallback(callbackQuery);
     }
 
@@ -92,6 +93,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         long chat_id = callbackQuery.getMessage().getChatId();
 
         User currentUser = userService.findUserByChat_id(chat_id);
+        replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());
         Operation operation = operationService.findOperationById(idHandledOperation);
             if (callBackData.equals(INCOME)) {
                 List<Category> incomeCategories = categoryService.getIncomes();

@@ -20,6 +20,9 @@ public enum Emojis {
     BANK(EmojiParser.parseToUnicode(":bank:")),
     BACK(EmojiParser.parseToUnicode(":back:")),
     HEART(EmojiParser.parseToUnicode(":heart:")),
+    ENGLISH(EmojiParser.parseToUnicode(":gb:")),
+    UKRAINE(EmojiParser.parseToUnicode(":ua:")),
+    RUSSIA(EmojiParser.parseToUnicode(":ru:")),
     CHECK(EmojiParser.parseToUnicode(":white_check_mark:")),
     WRITINGHANDLE(EmojiParser.parseToUnicode(":writing_hand:")),
     EURO(EmojiParser.parseToUnicode(":euro:"));

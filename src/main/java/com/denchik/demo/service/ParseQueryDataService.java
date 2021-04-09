@@ -12,4 +12,7 @@ public class ParseQueryDataService {
     public String getTypeOperationFromChooseTypeOperationQuery (CallbackQuery callbackQuery) {
         return callbackQuery.getData().split("\\|")[0];
     }
+    public String getLocaleTagFromChooseLanguageQuery (CallbackQuery callbackQuery) {
+        return callbackQuery.getData().split("\\|")[1];
+    }
 }

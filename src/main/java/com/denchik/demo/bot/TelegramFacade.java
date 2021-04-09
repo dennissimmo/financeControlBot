@@ -97,16 +97,6 @@ public class TelegramFacade {
             switch (textMessage) {
                 case "/start":
                     botState = BotState.START_STATE;
-                    /*log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), message.getChatId(), message.getText());
-                    com.denchik.demo.model.User userFromDB = userService.findUserByChat_id(message.getChatId());
-                    if (userFromDB != null) {
-                        return new SendMessage(message.getChatId(), String.format("Привет %s, твой id в Базе данных Heroku = %d", message.getFrom().getFirstName(), userFromDB.getId()));
-                    } else {
-                        userFromDB = new com.denchik.demo.model.User(message.getChatId(), message.getFrom().getFirstName(), message.getFrom().getLastName(),0);
-                        log.info("Додаємо нового користувача в базу:  chat_id {} username {} ", message.getChatId(), message.getFrom().getUserName());
-                        userService.addUser(userFromDB);
-                        return new SendMessage(message.getChatId(), "Вітаю, ви користуєтесь нашим ботом вперше\nВиконуємо реєстрацію:");
-                    }*/
                     break;
                 case "/list" :
                     botState = BotState.LIST_OPERATION;
@@ -124,8 +114,9 @@ public class TelegramFacade {
                     botState = BotState.DELETE_CONNECTION;
                     //reply = getConfirmationDeleteKeyboard(message);
                     break;
-                    /*log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), message.getChatId(), message.getText());
-                    return getConfirmationDeleteKeyboard(update);*/
+                case "/lang" :
+                    botState = BotState.LANGUAGE_CHOOSE;
+                    break;
                 default:
                     user = userService.findUserByChat_id(message.getChatId());
                     if (user.getState_id() != null) {
@@ -143,12 +134,6 @@ public class TelegramFacade {
                 userService.saveUser(user);
             }
             reply = botStateContext.processInputMessage(botState,message);
-            /*user = userService.findUserByChat_id(message.getChatId());
-            if (user != null) {
-                user.setState_id(botState);
-                log.info(user.toString());
-                userService.saveUser(user);
-            }*/
         } catch (Exception e) {
             reply = new SendMessage(message.getChatId(),"Can`t handle update on state : " + botState);
             log.info("Can't handle state : {}",botState);
