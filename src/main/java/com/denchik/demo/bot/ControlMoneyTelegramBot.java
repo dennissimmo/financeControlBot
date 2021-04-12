@@ -9,8 +9,10 @@ import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
+import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
+import org.telegram.telegrambots.meta.api.objects.InputFile;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -18,6 +20,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.KeyboardRow;
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
+import java.io.ByteArrayInputStream;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
@@ -101,9 +105,21 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
         EditMessageText et = new EditMessageText()
                 .setChatId(chat_id)
                 .setMessageId(messageID)
+                .enableHtml(true)
                 .setText(textMessage);
         try {
             execute(et);
+        } catch (TelegramApiException e) {
+            e.printStackTrace();
+        }
+    }
+    public void  createDocument(Long chatId, String fileName, ByteArrayInputStream byteArray ) {
+        InputStream stream = byteArray;
+        SendDocument document = new SendDocument();
+        document.setChatId(chatId.toString());
+        document.setDocument(new InputFile(stream, String.format("%s.xlsx", fileName)));
+        try {
+            execute(document);
         } catch (TelegramApiException e) {
             e.printStackTrace();
         }

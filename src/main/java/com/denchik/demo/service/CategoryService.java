@@ -40,6 +40,10 @@ public class CategoryService{
     public List<Category> findDistinctOperationCategoryByUserAndTypeOperationName(int user_id, String nameOperationType) {
         return categoryRepository.findDistinctOperationCategoryByUserAndTypeOperationName(user_id,nameOperationType);
     }
+    @Transactional(readOnly = true)
+    public List<Category> findDistinctOperationCategoryByUser (int userId) {
+        return categoryRepository.findDistinctOperationCategoryByUser(userId);
+    }
     @Transactional
     public List<Category> getExpenses () {
         return categoryRepository.findCategoriesByTypeCategoryByName("Витрати");

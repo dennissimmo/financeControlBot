@@ -52,10 +52,10 @@ public class LanguageQueryHandler implements CallbackQueryHandler{
             Balance userBalance = currentUser.getBalance();
             if (userBalance != null) {
                 currentUser.setState_id(BotState.WAIT_OPERATION);
-                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.start.authorized.instruction",currentUser.getFirst_name());
+                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.start.authorized.instruction",String.format("<b>%s</b>",currentUser.getFirst_name()),Emojis.GRITING).enableHtml(true);
                 userService.saveUser(currentUser);
             } else {
-                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.start.authorized.setBalance",currentUser.getFirst_name());
+                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.start.authorized.setBalance",String.format("<b>%s</b>",currentUser.getFirst_name()),Emojis.GRITING).enableHtml(true);
                 currentUser.setState_id(BotState.NONE);
                 userService.saveUser(currentUser);
             }

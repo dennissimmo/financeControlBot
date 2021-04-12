@@ -82,7 +82,7 @@ public class AddOperationHandler implements InputMessageHandler {
         return sendMessage;
     }
     private boolean isCorrectFormatOperation (String messageText) {
-        String regex = "\\d+";
+        String regex = "\\d+[\\.]{0,1}\\d+";
         Pattern digits = Pattern.compile(regex);
         boolean isOperationText = digits.matcher(messageText).matches();
         return isOperationText;

@@ -57,7 +57,7 @@ public class DeleteOperationQueryHandler implements CallbackQueryHandler{
             }
             userService.saveUser(currentUser);
             balanceService.saveBalance(userBalance);
-            controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.operation.delete",operationDescription, Emojis.WARNING));
+            controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.operation.delete",String.format("<b>%s %s</b>",operationDescription,operation.getCategory().getName()), Emojis.WARNING));
             operationService.deleteOperation(operation);
         }
        return new SendMessage();

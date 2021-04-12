@@ -117,4 +117,14 @@ public class Operation extends AbstractBaseEntity {
             return false;
         }
     }
+    public String addSignForOperation (Operation operation) {
+        TypeOperation typeOperation  = operation.getTypeOperation();
+        if (typeOperation.getName().equals("EXPENSE")) {
+            return String.format("- %.2f",operation.getAmount());
+        }
+        if (typeOperation.getName().equals("INCOME")) {
+            return String.format("+ %.2f",operation.getAmount());
+        }
+        return "";
+    }
 }

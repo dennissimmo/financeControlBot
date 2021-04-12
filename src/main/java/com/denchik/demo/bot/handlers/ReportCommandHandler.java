@@ -40,22 +40,44 @@ public class ReportCommandHandler implements InputMessageHandler{
         response.append("\n");
         Long chat_id = message.getChatId();
         User currentUser = userService.findUserByChat_id(message.getChatId());
+        List<Operation> userOperations = operationService.findOperationsByUser(currentUser);
         Balance userBalance = currentUser.getBalance();
+        /*if (userOperations.size() == 0) {
+            if (userBalance == null) {
+
+            }
+            return replyMessagesService.getReplyMessage()
+        }*/
+
         TypeOperation incomeType = typeOperationService.getTypeByName("Income");
         TypeOperation expenseType = typeOperationService.getTypeByName("Expense");
-        response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.income", Emojis.INCOME)).append(String.format(": %.2f \n",operationService.sumAmountOperationsByTypeOperation(incomeType,currentUser)) + "</b>");
         List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(incomeType,currentUser);
+        if (incomeOperations.size() > 0) {
+            response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.income", Emojis.INCOME)).append(String.format(": %.2f \n",operationService.sumAmountOperationsByTypeOperation(incomeType,currentUser)) + "</b>");
+        } else {
+            response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.income", Emojis.INCOME)).append(": 0 </b>\n");
+        }
+
         List<Category> uniqueCategories = incomeOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
-        for (Category category : uniqueCategories) {
-            if (category != null) {
-                response.append(String.format("\n    <code>%s %s %.2f</code> \n",replyMessagesService.getReplyText("emojis.empty",Emojis.PUSHPIN),category.getName(),operationService.sumAmountOperationsByCategory(category,currentUser)));
+        if (uniqueCategories.size() > 0) {
+            for (Category category : uniqueCategories) {
+                if (category != null) {
+                    response.append(String.format("\n    <code>%s %s %.2f</code> \n", replyMessagesService.getReplyText("emojis.empty", Emojis.PUSHPIN), category.getName(), operationService.sumAmountOperationsByCategory(category, currentUser)));
+                }
             }
+        } else {
+            response.append("\n");
         }
         List<Operation> expenseOperations = operationService.getUserOperations(currentUser).stream().filter(operation -> operation.getTypeOperation().getName().equalsIgnoreCase("Expense")).collect(Collectors.toList());
         List<Category> expenseCategories = expenseOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
         //List<Category> expenseCategories = categoryService.findDistinctOperationCategoryByUserAndTypeOperationName(currentUser.getId(),"EXPENSE");
         response.append("\n");
-        response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.expense", Emojis.EXPENSE)).append(String.format(": %.2f \n",operationService.sumAmountOperationsByTypeOperation(expenseType,currentUser))+ "</b>");
+        if (expenseOperations.size() > 0) {
+            response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.expense", Emojis.EXPENSE)).append(String.format(": %.2f \n",operationService.sumAmountOperationsByTypeOperation(expenseType,currentUser))+ "</b>");
+        } else {
+            response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.expense", Emojis.EXPENSE)).append(": 0 \n</b>");
+        }
+
         expenseCategories.forEach(category -> response.append(String.format("\n   <code> %s %s %.2f </code>\n",replyMessagesService.getReplyText("emojis.empty",Emojis.PUSHPIN),category.getName(),operationService.sumAmountOperationsByCategory(category,currentUser))));
         response.append("\n");
         response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.lastOperation",Emojis.RECORD) + "</b>");

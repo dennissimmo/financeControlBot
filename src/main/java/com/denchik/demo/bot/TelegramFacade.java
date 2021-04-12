@@ -107,6 +107,9 @@ public class TelegramFacade {
                 case "/report" :
                     botState = BotState.REPORT;
                     break;
+                case "/export" :
+                    botState = BotState.EXPORT;
+                    break;
                 case "/setbal" :
                     botState = BotState.SET_BALANCE;
                     break;

@@ -38,7 +38,7 @@ public class OperationService {
     }
     @Transactional(readOnly = true)
     public List<Operation> getUserOperations (User user) {
-        return operationRepository.findOperationByUser(user);
+        return operationRepository.findOperationByUserAndCategoryNotNull(user);
     }
     @Transactional(readOnly = true)
     public Operation findOperationById (Integer id) {
@@ -47,6 +47,10 @@ public class OperationService {
     @Transactional(readOnly = true)
     public List<Operation> findAllOperationByTypeCategory (TypeOperation typeOperation, User user) {
         return  operationRepository.findOperationByTypeOperationAndUserOrderByAmount(typeOperation,user);
+    }
+    @Transactional(readOnly = true)
+    public List<Operation> findOperationByCategory (Category category) {
+        return operationRepository.findOperationsByCategory(category);
     }
     @Transactional(readOnly = true)
     public List<Operation> getOperationByDay () {
@@ -69,7 +73,7 @@ public class OperationService {
     }
     @Transactional(readOnly = true)
     public List<Operation> findOperationsByUser (User user) {
-        return operationRepository.findOperationByUser(user);
+        return operationRepository.findOperationByUserAndCategoryNotNull(user);
     }
     @Transactional
     public void deleteOperation (Operation operation) {

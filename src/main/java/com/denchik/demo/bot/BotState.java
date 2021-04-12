@@ -11,6 +11,7 @@ public enum BotState {
     SETUP_CATEGORY,
     ADD_NEW_CATEGORY,
     SHOW_LAST_OPERATIONS,
+    EXPORT,
     СHOOSE_SETTING,
     ASK_BALANCE,
     GET_BALANCE,

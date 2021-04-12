@@ -61,6 +61,10 @@ public class SetBalanceCommandHandler implements InputMessageHandler {
                 reply = replyMessagesService.getReplyMessage(chat_id, "reply.command.setBalance.askBalance", Emojis.DOLLAR);
                 currentUser.setState_id(BotState.CONFIRM_BALANCE_SET);
                 userService.saveUser(currentUser);
+            } else {
+                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.setBalance.change",Emojis.BANK,userBalance.getSource().getTypeSource(),String.format("%.1f UAH",userBalance.getAmount()),Emojis.DOLLAR,Emojis.CLIP);
+                currentUser.setState_id(BotState.CONFIRM_BALANCE_SET);
+                userService.saveUser(currentUser);
             }
         }
         if (botState.equals(BotState.CONFIRM_BALANCE_SET)) {
@@ -75,8 +79,15 @@ public class SetBalanceCommandHandler implements InputMessageHandler {
                     currentUser.setState_id(BotState.WAIT_OPERATION); // Якщо користувач коректно вказав баланс, переводимо бота в стан очікування ведення операції
                     balanceService.saveBalance(userBalance);
                     userService.saveUser(currentUser);
-                } else {
 
+                } else if (userInput.equals("-")) {
+                    reply = replyMessagesService.getReplyMessage(chat_id,"reply.information.addOperation",Emojis.INFO);
+                    currentUser.setState_id(BotState.WAIT_OPERATION); // Якщо користувач коректно вказав баланс, переводимо бота в стан очікування ведення операції
+                    balanceService.saveBalance(userBalance);
+                    userService.saveUser(currentUser);
+                }
+                else {
+                    reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.setBalance.incorrectInput",Emojis.ORANGE_WARNING);
                 }
         }
         return reply;

@@ -62,15 +62,18 @@ public class ListCommandHandler implements InputMessageHandler{
         TypeOperation income = typeOperationService.getTypeByName("Income");
         List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(income,currentUser);
         BotState botState = BotState.getBotStateById(currentUser.getState_id());
-        SendMessage reply = null;
-        if (userOperations.isEmpty()) {
-            reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.empty.list",Emojis.SCROLL);
-        } else {
-            reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.list",Emojis.SCROLL);
-            reply.setReplyMarkup(getListOperations(userOperations));
-        }
         List<Operation> monthNumbers = operationService.getOperationPerNumberMonth(4);
         monthNumbers.forEach(month -> System.out.println(month.toString()));
+        SendMessage reply = new SendMessage();
+        if (userOperations.isEmpty()) {
+            reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.empty.list",Emojis.SCROLL);
+            log.info("User operation is empty");
+        } else {
+            reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.list",Emojis.SCROLL,Emojis.POINT_DOWN).setReplyMarkup(getListOperations(monthNumbers)); // .setReplyMarkup(getListOperations(monthNumbers)
+            log.info("User operation is not empty");
+        }
+
+
        /* List<Operation> groupedOperations = operationService.getSumOperationByCategoryPerMonth(4);
         log.info("Size of unique categories group {}",groupedOperations.size());*/
         /*List<Operation> dayOperations = operationService.getOperationByDay();
@@ -84,7 +87,9 @@ public class ListCommandHandler implements InputMessageHandler{
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         for (int i = 0; i < operations.size(); i++) {
             Operation currentOperation = operations.get(i);
-            InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s %s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName()));
+            //  InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s %s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName()));
+            InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(currentOperation)));
+
             List<InlineKeyboardButton> listButton = new ArrayList<>();
             listButton.add(button);
             buttons.add(listButton);

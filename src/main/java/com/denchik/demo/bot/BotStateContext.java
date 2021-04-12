@@ -29,15 +29,19 @@ public class BotStateContext {
         if (isBalanceState(currentState)) {
             return messageHandlers.get(BotState.SET_BALANCE);
         }
-       /* if (isTrainSearchState(currentState)) {
-            return messageHandlers.get(BotState.TRAINS_SEARCH);
+        if (isOperationAdd(currentState)) {
+            return messageHandlers.get(BotState.WAIT_OPERATION);
         }
-
-        if (isStationSearchState(currentState)) {
-            return messageHandlers.get(BotState.STATIONS_SEARCH);
-        }*/
-
         return messageHandlers.get(currentState);
+    }
+    private boolean isOperationAdd (BotState state) {
+        switch (state) {
+            case WAIT_OPERATION:
+            case SET_AMOUNT_OPERATION:
+                return true;
+            default:
+                return false;
+        }
     }
     private boolean isBalanceState (BotState state) {
         switch (state) {

@@ -13,10 +13,10 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface OperationRepository extends JpaRepository<Operation,Long> {
     List<Operation> findAllByCategory (Category category);
-    List<Operation> findOperationByUser(User user);
+    List<Operation> findOperationByUserAndCategoryNotNull(User user);
     List<Operation> findOperationByTypeOperationAndUserOrderByAmount(TypeOperation typeOperation, User user);
     List<Operation> findTop5ByOrderByCreateAtDesc ();
-    @Query(value = "SELECT o. * FROM operation o where o.user_id = ?1 ORDER BY o.create_at DESC limit ?2",nativeQuery = true)
+    @Query(value = "SELECT o. * FROM operation o where o.user_id = ?1 AND o.category_id IS NOT NULL ORDER BY o.create_at DESC limit ?2",nativeQuery = true)
     List<Operation> findLastUserOperations (int user_id,int limit);
     Operation findTopByOrderByCreateAt ();
     Operation findTopByOrderById ();
@@ -25,14 +25,16 @@ public interface OperationRepository extends JpaRepository<Operation,Long> {
     List<Operation> getSumOperationByCategoryPerMonth (int userId);
     @Query("SELECT sum(o.amount) FROM Operation o WHERE o.typeOperation= :typeOperation AND o.user= :user")
     double sumAmountOperationsForOperationType (TypeOperation typeOperation,User user);
+    List<Operation> findOperationsByCategory (Category category);
     @Query("SELECT sum(o.amount) FROM Operation o WHERE o.category= :category AND o.user= :user")
     double sumAmountOperationsForCategory (Category category,User user);
     @Query("SELECT c FROM Category c INNER join fetch c.typeCategory as typeCategory where typeCategory.name_type= :name_type ")
     List<Category> findCategoriesByTypeCategoryByName (@Param("name_type") String name_type);
     @Query(value = "SELECT * FROM Operation WHERE DAY((DATE)create_at) = 4 GROUP BY DAY(create_at)",nativeQuery = true)
     List<Operation> findOperationByDate ();
-    @Query(value = "SELECT * FROM Operation WHERE date_part('day',create_at) = ?1",nativeQuery = true)
+    //@Query(value = "SELECT * FROM Operation WHERE date_part('day',create_at) = ?1",nativeQuery = true)
     // @Query(value = "SELECT date_part('month',create_at)",nativeQuery = true)
+    @Query(value = "SELECT * FROM Operation WHERE date_part('month',create_at) = ?1",nativeQuery = true)
     List<Operation> numberOfMonth (int numberOfMonth);
     //@Query(value = "SELECT * FROM Operation WHERE date_part('month',create_at) = 5")
     void deleteAllByUserId (Integer userID);

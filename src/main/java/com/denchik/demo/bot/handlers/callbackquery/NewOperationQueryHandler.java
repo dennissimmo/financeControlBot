@@ -34,8 +34,6 @@ import java.util.List;
 @Component
 
 public class NewOperationQueryHandler implements CallbackQueryHandler{
-    @Value("${localeTag}")
-    private String localeTag;
     private final SimpleDateFormat FULL_MONTH_UA = new SimpleDateFormat("dd MMMM yyyy",myDateUA);
     private final SimpleDateFormat FULL_MONTH_RU = new SimpleDateFormat("dd MMMM yyyy",myDateRU);
     private final SimpleDateFormat FULL_MONTH_EN = new SimpleDateFormat("dd MMMM yyyy");
@@ -93,7 +91,8 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         long chat_id = callbackQuery.getMessage().getChatId();
 
         User currentUser = userService.findUserByChat_id(chat_id);
-        replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());
+        String localeTag = currentUser.getLanguage_code();
+        replyMessagesService.setLocaleMessageService(localeTag);
         Operation operation = operationService.findOperationById(idHandledOperation);
             if (callBackData.equals(INCOME)) {
                 List<Category> incomeCategories = categoryService.getIncomes();
