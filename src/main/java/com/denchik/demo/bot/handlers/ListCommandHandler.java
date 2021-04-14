@@ -89,7 +89,7 @@ public class ListCommandHandler implements InputMessageHandler{
         for (int i = 0; i < operations.size(); i++) {
             Operation currentOperation = operations.get(i);
             //  InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s %s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName()));
-            InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(currentOperation)));
+            InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s",currentOperation.getId(),currentOperation.getCategory().getId(),addSignForOperation(currentOperation)));
             List<InlineKeyboardButton> listButton = new ArrayList<>();
             listButton.add(button);
             buttons.add(listButton);
