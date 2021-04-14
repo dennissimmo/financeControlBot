@@ -49,8 +49,8 @@ public class OperationService {
         return  operationRepository.findOperationByTypeOperationAndUserOrderByAmount(typeOperation,user);
     }
     @Transactional(readOnly = true)
-    public List<Operation> findOperationByCategory (Category category) {
-        return operationRepository.findOperationsByCategory(category);
+    public List<Operation> findOperationByCategoryAndUser (Category category,User user) {
+        return operationRepository.findOperationsByCategoryAndUser(category,user);
     }
     @Transactional(readOnly = true)
     public List<Operation> getOperationByDay () {
