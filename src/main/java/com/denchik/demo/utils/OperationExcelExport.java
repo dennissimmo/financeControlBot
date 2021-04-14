@@ -86,7 +86,7 @@ public class OperationExcelExport {
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(2).setCellValue(operationByCategory.get(j).addSignForOperation(operationByCategory.get(j)));
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(3).setCellValue(operationByCategory.get(j).getCategory().getName());
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(4).setCellValue(operationByCategory.get(j).getNote());
-                for (int columnNumber = 0; columnNumber < sheetsCategory.size(); columnNumber++) {
+                for (int columnNumber = 0; columnNumber < 6; columnNumber++) {
                     sheetsCategory.get(sheetIndex).autoSizeColumn(columnNumber);
                 }
                 startRowIndex++;
