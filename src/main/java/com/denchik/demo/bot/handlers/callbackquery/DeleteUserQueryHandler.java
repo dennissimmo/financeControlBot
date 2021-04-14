@@ -8,9 +8,11 @@ import com.denchik.demo.service.BalanceService;
 import com.denchik.demo.service.OperationService;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
+import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
+import org.telegram.telegrambots.meta.api.methods.send.SendPhoto;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
@@ -40,10 +42,19 @@ public class DeleteUserQueryHandler implements CallbackQueryHandler {
         String callBackText = callbackQuery.getData();
         long chat_id = callbackQuery.getMessage().getChatId();
         User currentUser = userService.findUserByChat_id(chat_id);
-        replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());
+
+        if (currentUser != null) {
+            String localeUser = currentUser.getLanguage_code();
+            if (localeUser != null) {
+                replyMessagesService.setLocaleMessageService(localeUser);
+            }
+        }
+
         if (callBackText.equals(YES)) {
             operationService.deleteAllOperationByUserID(currentUser.getId());
-            balanceService.deleteBalanceById(currentUser.getBalance().getId());
+            if (currentUser.getBalance() != null) {
+                balanceService.deleteBalanceById(currentUser.getBalance().getId());
+            }
             log.info("Delete user : {}", currentUser.toString());
             userService.deleteUserByChat_id(chat_id);
             controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.delete.user"));
@@ -52,7 +63,7 @@ public class DeleteUserQueryHandler implements CallbackQueryHandler {
             // TODO: Add message if user not confirm deleting
             currentUser.setState_id(BotState.WAIT_OPERATION);
             userService.saveUser(currentUser);
-            controlMoneyTelegramBot.editMessage(chat_id,messageId,"Confirm usage");
+            controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.delete.cancel",Emojis.CHECK));
         }
         return new SendMessage();
     }

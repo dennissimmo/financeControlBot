@@ -130,6 +130,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
                 .setChatId(chat_id)
                 .setMessageId(messageID)
                 .setReplyMarkup(inlineKeyboardMarkup)
+                .enableHtml(true)
                 .setText(textMessage);
         try {
             execute(et);

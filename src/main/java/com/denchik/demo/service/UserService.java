@@ -33,5 +33,9 @@ public class UserService {
     public void saveUser (User user){
         userRepository.save(user);
     }
+    @Transactional(readOnly = true)
+    public int getCountUsers () {
+        return userRepository.countByBalanceNotNull();
+    }
 
 }

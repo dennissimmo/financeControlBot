@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMa
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -62,7 +63,7 @@ public class ListCommandHandler implements InputMessageHandler{
         TypeOperation income = typeOperationService.getTypeByName("Income");
         List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(income,currentUser);
         BotState botState = BotState.getBotStateById(currentUser.getState_id());
-        List<Operation> monthNumbers = operationService.getOperationPerNumberMonth(4);
+        List<Operation> monthNumbers = operationService.getOperationPerNumberMonth(4,currentUser.getId(), LocalDate.now().getYear());
         monthNumbers.forEach(month -> System.out.println(month.toString()));
         SendMessage reply = new SendMessage();
         if (userOperations.isEmpty()) {
@@ -89,7 +90,6 @@ public class ListCommandHandler implements InputMessageHandler{
             Operation currentOperation = operations.get(i);
             //  InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s %s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName()));
             InlineKeyboardButton button = new InlineKeyboardButton().setText(String.format("%s %s %s %s",Emojis.WASTEBUSKET,DAY_MONTH_YEAR.format(currentOperation.getCreateAt()),addSignForOperation(operations.get(i)),currentOperation.getCategory().getName())).setCallbackData(String.format("operation|%d|%s|%s",currentOperation.getId(),currentOperation.getCategory().getName(),addSignForOperation(currentOperation)));
-
             List<InlineKeyboardButton> listButton = new ArrayList<>();
             listButton.add(button);
             buttons.add(listButton);

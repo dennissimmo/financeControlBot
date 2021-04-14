@@ -41,9 +41,6 @@ public class OperationExcelExport {
             sheetsCategory.add(workbook.getSheetAt(sheetID));
         }
     }
-    public void createExcel () {
-
-    }
     public void writeHeaderRow () {
         XSSFFont font = workbook.createFont();
         font.setFontHeightInPoints((short)12);
@@ -59,22 +56,22 @@ public class OperationExcelExport {
             headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             //headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             headerCellStyle.setFont(font);
-            Cell id = headerRow.createCell(0);
+           /* Cell id = headerRow.createCell(0);
             id.setCellValue("ID");
-            id.setCellStyle(headerCellStyle);
-            Cell number = headerRow.createCell(1);
+            id.setCellStyle(headerCellStyle);*/
+            Cell number = headerRow.createCell(0);
             number.setCellValue("№ ");
             number.setCellStyle(headerCellStyle);
-            Cell date = headerRow.createCell(2);
+            Cell date = headerRow.createCell(1);
             date.setCellValue("Date");
             date.setCellStyle(headerCellStyle);
-            Cell sum = headerRow.createCell(3);
+            Cell sum = headerRow.createCell(2);
             sum.setCellValue("Sum");
             sum.setCellStyle(headerCellStyle);
-            Cell category = headerRow.createCell(4);
+            Cell category = headerRow.createCell(3);
             category.setCellValue("Category");
             category.setCellStyle(headerCellStyle);
-            Cell note = headerRow.createCell(5);
+            Cell note = headerRow.createCell(4);
             note.setCellValue("Note");
             note.setCellStyle(headerCellStyle);
         }
@@ -91,7 +88,7 @@ public class OperationExcelExport {
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(3).setCellValue(operationByCategory.get(j).addSignForOperation(operationByCategory.get(j)));
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(4).setCellValue(operationByCategory.get(j).getCategory().getName());
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(5).setCellValue(operationByCategory.get(j).getNote());
-                for (int columnNumber = 0; columnNumber < 5; columnNumber++) {
+                for (int columnNumber = 0; columnNumber < sheetsCategory.size(); columnNumber++) {
                     sheetsCategory.get(sheetIndex).autoSizeColumn(columnNumber);
                 }
                 startRowIndex++;

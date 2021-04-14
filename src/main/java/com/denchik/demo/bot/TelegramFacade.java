@@ -119,14 +119,21 @@ public class TelegramFacade {
                 case "/lang" :
                     botState = BotState.LANGUAGE_CHOOSE;
                     break;
+                case "/help" :
+                    botState = BotState.HELP;
+                    break;
                 default:
                     user = userService.findUserByChat_id(message.getChatId());
-                    if (user.getState_id() != null) {
-                        botState = BotState.getBotStateById(user.getState_id());
-                    } else {
+                    if (user == null) {
                         botState = BotState.NONE;
+                    } else {
+                        if (user.getState_id() != null) {
+                            botState = BotState.getBotStateById(user.getState_id());
+                        } else {
+                            botState = BotState.NONE;
+                        }
+                        break;
                     }
-                    break;
             }
         try {
             user = userService.findUserByChat_id(message.getChatId());
@@ -143,7 +150,6 @@ public class TelegramFacade {
         }
         return reply;
     }
-
         private boolean isOperationAmount (String messageText) {
             String regex = "\\d+";
             Pattern digits = Pattern.compile(regex);

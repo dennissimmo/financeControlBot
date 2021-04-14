@@ -26,8 +26,8 @@ public class OperationService {
        operationRepository.save(operation);
     }
     @Transactional(readOnly = true)
-    public List<Operation> findLastOperationsUser (int user_id, int limit) {
-        return operationRepository.findLastUserOperations(user_id,limit);
+    public List<Operation> findLastOperationsUser (int user_id, int limit, int year, int month) {
+        return operationRepository.findLastUserOperations(user_id,limit,year,month);
     }
     public Operation getLastOperationByCreateDate () {
         return operationRepository.findTopByOrderByCreateAt();
@@ -57,16 +57,16 @@ public class OperationService {
         return operationRepository.findOperationByDate();
     }
     @Transactional(readOnly = true)
-    public double sumAmountOperationsByTypeOperation (TypeOperation typeOperation,User user) {
-        return  operationRepository.sumAmountOperationsForOperationType(typeOperation,user);
+    public double sumAmountOperationsByTypeOperation (TypeOperation typeOperation,User user,int month, int year) {
+        return  operationRepository.sumAmountOperationsForOperationType(typeOperation,user,month,year);
     }
     @Transactional(readOnly = true)
     public double sumAmountOperationsByCategory (Category category,User user) {
         return  operationRepository.sumAmountOperationsForCategory(category,user);
     }
     @Transactional(readOnly = true)
-    public List<Operation> getOperationPerNumberMonth (int numberOfMonth) {
-        return operationRepository.numberOfMonth(numberOfMonth);
+    public List<Operation> getOperationPerNumberMonth (int numberOfMonth,int user_id, int year) {
+        return operationRepository.getOperationByNumberMonthAndYear(numberOfMonth,user_id,year);
     }
     public List<Operation> getSumOperationByCategoryPerMonth (int userID) {
         return operationRepository.getSumOperationByCategoryPerMonth(userID);

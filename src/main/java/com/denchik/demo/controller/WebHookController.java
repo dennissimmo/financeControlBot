@@ -21,18 +21,10 @@ public class WebHookController {
         this.telegramFacade = telegramFacade;
         System.out.println("Внедряем Message Handler в WebHook Controller");
     }
-    /*private final ControlMoneyTelegramBot telegramBot;
-    public WebHookController (ControlMoneyTelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-    }
-    @RequestMapping(value = "/",method = RequestMethod.POST)
-    public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
-        return telegramBot.onWebhookUpdateReceived(update);
-    }*/
+
     @RequestMapping(value = "/",method = RequestMethod.POST)
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
         return telegramFacade.handleUpdate(update);
-        // return messageHandler.handleUpdate(update);
     }
 
 }

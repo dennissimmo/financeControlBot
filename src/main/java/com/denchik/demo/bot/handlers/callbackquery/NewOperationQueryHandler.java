@@ -127,10 +127,8 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 Category category = categoryService.findCategoryById(idChooseCategory);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 LocalDateTime dateObj = LocalDateTime.now();
-                System.out.println("Before formatting : " + dateObj);
                 DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formattedDate= dateObj.format(dt);
-                System.out.println("After formatting: " + formattedDate);
                 operation.setCreateAt(timestamp);
                 //operation.setCreateAt(parseTimestamp(formattedDate));
                 operation.setCategory(category);
@@ -206,7 +204,31 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
     }
     public InlineKeyboardMarkup getListCategories (List<Category> categoryList,Operation operation) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        /*List<Category> categoryList = categoryService.findAllCategories();*/
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        //TODO: Bad approach i think, need a find better solution
+        for (int i = 0; i < categoryList.size(); i+= 2) {
+            List<InlineKeyboardButton> listButton = new ArrayList<>();
+            if (i + 1 < categoryList.size()) {
+                for (int j = 0; j < 2; j++) {
+                    InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i+j).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i+j).getName(),categoryList.get(i+j).getId()));
+                    listButton.add(button);
+                }
+            } else {
+                InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i).getName(),categoryList.get(i).getId()));
+                listButton.add(button);
+            }
+            buttons.add(listButton);
+        }
+        List<InlineKeyboardButton> listBtn = new ArrayList<>();
+        listBtn.add(new InlineKeyboardButton().setText(replyMessagesService.getReplyText("button.back",Emojis.BACK)).setCallbackData(String.format("%s|%d","Back",operation.getId())));
+        buttons.add(listBtn);
+        markup.setKeyboard(buttons);
+        // String chat_ids = update.getMessage().getChatId().toString();
+        return markup;
+    }
+   /* public InlineKeyboardMarkup getListCategories (List<Category> categoryList,Operation operation) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        *//*List<Category> categoryList = categoryService.findAllCategories();*//*
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         for (int i = 0; i < categoryList.size(); i++) {
             InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i).getName(),categoryList.get(i).getId()));
@@ -220,7 +242,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         markup.setKeyboard(buttons);
         // String chat_ids = update.getMessage().getChatId().toString();
         return markup;
-    }
+    }*/
     private static DateFormatSymbols myDateRU = new DateFormatSymbols(){
 
         @Override

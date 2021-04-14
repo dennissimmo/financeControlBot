@@ -13,6 +13,7 @@ import java.util.List;
 @Transactional(readOnly = true)
 public interface UserRepository extends JpaRepository<User,Long> {
     List<User> findAllByUsername (String username);
+    int countByBalanceNotNull ();
     List<User> findAll ();
     User findByChatId (Long chat_id);
     void deleteByChatId (Long chat_id);

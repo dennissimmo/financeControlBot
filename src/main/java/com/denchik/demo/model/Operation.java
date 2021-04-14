@@ -46,6 +46,13 @@ public class Operation extends AbstractBaseEntity {
         this.source = source;
         this.user = user;
     }
+    public Operation (double amount,String raw_text,String note,Source source,User user) {
+        this.amount = amount;
+        this.note = note;
+        this.raw_text = raw_text;
+        this.source = source;
+        this.user = user;
+    }
     public Double getAmount() {
         return amount;
     }
