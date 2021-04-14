@@ -81,8 +81,7 @@ public class OperationExcelExport {
             int startRowIndex = 1;
             List<Operation> operationByCategory = operationService.findOperationByCategory(distinctCategories.get(sheetIndex));
             for (int j = 0; j < operationByCategory.size() ; j++) {
-                //sheetsCategory.get(sheetIndex).createRow(startRowIndex).createCell(0).setCellValue(operationByCategory.get(j).getId());
-                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(0).setCellValue(startRowIndex);
+                sheetsCategory.get(sheetIndex).createRow(startRowIndex).createCell(0).setCellValue(startRowIndex);
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(1).setCellValue(formatData.format(operationByCategory.get(j).getCreateAt()));
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(2).setCellValue(operationByCategory.get(j).addSignForOperation(operationByCategory.get(j)));
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(3).setCellValue(operationByCategory.get(j).getCategory().getName());
