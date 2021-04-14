@@ -77,17 +77,16 @@ public class OperationExcelExport {
         }
     }
     public void writeCellsDataRows () {
-
         for (int sheetIndex = 0; sheetIndex < sheetsCategory.size(); sheetIndex++) {
             int startRowIndex = 1;
             List<Operation> operationByCategory = operationService.findOperationByCategory(distinctCategories.get(sheetIndex));
             for (int j = 0; j < operationByCategory.size() ; j++) {
-                sheetsCategory.get(sheetIndex).createRow(startRowIndex).createCell(0).setCellValue(operationByCategory.get(j).getId());
-                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(1).setCellValue(startRowIndex);
-                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(2).setCellValue(formatData.format(operationByCategory.get(j).getCreateAt()));
-                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(3).setCellValue(operationByCategory.get(j).addSignForOperation(operationByCategory.get(j)));
-                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(4).setCellValue(operationByCategory.get(j).getCategory().getName());
-                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(5).setCellValue(operationByCategory.get(j).getNote());
+                //sheetsCategory.get(sheetIndex).createRow(startRowIndex).createCell(0).setCellValue(operationByCategory.get(j).getId());
+                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(0).setCellValue(startRowIndex);
+                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(1).setCellValue(formatData.format(operationByCategory.get(j).getCreateAt()));
+                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(2).setCellValue(operationByCategory.get(j).addSignForOperation(operationByCategory.get(j)));
+                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(3).setCellValue(operationByCategory.get(j).getCategory().getName());
+                sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(4).setCellValue(operationByCategory.get(j).getNote());
                 for (int columnNumber = 0; columnNumber < sheetsCategory.size(); columnNumber++) {
                     sheetsCategory.get(sheetIndex).autoSizeColumn(columnNumber);
                 }
