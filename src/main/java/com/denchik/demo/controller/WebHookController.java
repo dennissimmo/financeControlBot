@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RestController;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.objects.Update;
 
+import javax.servlet.http.HttpServletResponse;
+
 @RestController
 public class WebHookController {
     private final MessageHandler messageHandler;
@@ -19,17 +21,10 @@ public class WebHookController {
         this.telegramFacade = telegramFacade;
         System.out.println("Внедряем Message Handler в WebHook Controller");
     }
-    /*private final ControlMoneyTelegramBot telegramBot;
-    public WebHookController (ControlMoneyTelegramBot telegramBot) {
-        this.telegramBot = telegramBot;
-    }
-    @RequestMapping(value = "/",method = RequestMethod.POST)
-    public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
-        return telegramBot.onWebhookUpdateReceived(update);
-    }*/
+
     @RequestMapping(value = "/",method = RequestMethod.POST)
     public BotApiMethod<?> onUpdateReceived(@RequestBody Update update) {
         return telegramFacade.handleUpdate(update);
-        // return messageHandler.handleUpdate(update);
     }
+
 }

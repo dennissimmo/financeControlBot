@@ -5,6 +5,7 @@ import com.denchik.demo.model.*;
 import com.denchik.demo.service.*;
 import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
+import org.checkerframework.checker.units.qual.C;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
@@ -33,8 +34,6 @@ import java.util.List;
 @Component
 
 public class NewOperationQueryHandler implements CallbackQueryHandler{
-    @Value("${localeTag}")
-    private String localeTag;
     private final SimpleDateFormat FULL_MONTH_UA = new SimpleDateFormat("dd MMMM yyyy",myDateUA);
     private final SimpleDateFormat FULL_MONTH_RU = new SimpleDateFormat("dd MMMM yyyy",myDateRU);
     private final SimpleDateFormat FULL_MONTH_EN = new SimpleDateFormat("dd MMMM yyyy");
@@ -70,12 +69,19 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         final long chat_id = callbackQuery.getMessage().getChatId();
         final int messageId = callbackQuery.getMessage().getMessageId(); // Need for change message with keyboard in future
         log.info("Callback query data {}",callbackQuery.getData());
+
         return processCallback(callbackQuery);
     }
 
     @Override
     public List<String> getHandlerQueryType() {
-        return List.of(INCOME,EXPENSE,CANCEL,BACK,CATEGORY);
+        List<String> availableQuery = new ArrayList<>();
+        availableQuery.add(INCOME);
+        availableQuery.add(EXPENSE);
+        availableQuery.add(CANCEL);
+        availableQuery.add(BACK);
+        availableQuery.add(CATEGORY);
+        return availableQuery;
     }
     public SendMessage processCallback (CallbackQuery callbackQuery) {
         Integer idHandledOperation = Integer.parseInt(parseQueryDataService.getIdOperationFromChooseTypeOperationQuery(callbackQuery));
@@ -85,6 +91,8 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         long chat_id = callbackQuery.getMessage().getChatId();
 
         User currentUser = userService.findUserByChat_id(chat_id);
+        String localeTag = currentUser.getLanguage_code();
+        replyMessagesService.setLocaleMessageService(localeTag);
         Operation operation = operationService.findOperationById(idHandledOperation);
             if (callBackData.equals(INCOME)) {
                 List<Category> incomeCategories = categoryService.getIncomes();
@@ -105,7 +113,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 Balance balance = currentUser.getBalance();
                 String replyCancel = callbackQuery.getMessage().getText() + "\n - \n" + replyMessagesService.getReplyText("reply.operation.cancel.canceled",Emojis.EMPTYCANCEL);
                 controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyCancel,null);
-                if (isExpense(operation)) {
+                if (Operation.isExpense(operation)) {
                     balance.upBalance(operation.getAmount());
                 } else {
                     balance.downBalance(operation.getAmount());
@@ -119,10 +127,8 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 Category category = categoryService.findCategoryById(idChooseCategory);
                 Timestamp timestamp = new Timestamp(System.currentTimeMillis());
                 LocalDateTime dateObj = LocalDateTime.now();
-                System.out.println("Before formatting : " + dateObj);
                 DateTimeFormatter dt = DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss");
                 String formattedDate= dateObj.format(dt);
-                System.out.println("After formatting: " + formattedDate);
                 operation.setCreateAt(timestamp);
                 //operation.setCreateAt(parseTimestamp(formattedDate));
                 operation.setCategory(category);
@@ -137,9 +143,9 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 }
                 System.out.println("Type category : " + category.getTypeCategory().getName_type() + replyMessagesService.getReplyText("reply.typeOperation.incomes").trim());
                 if (operation.getTypeOperation().getName().equals("EXPENSE")) {
-                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted),cancelOperation(idHandledOperation));
+                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 } else {
-                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.income", operation.getAmount(),category.getName(),dateOperationFormatted),cancelOperation(idHandledOperation));
+                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.income", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 }
                 // Change balance after operation added
                 Balance userBalance = currentUser.getBalance();
@@ -155,13 +161,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         }
         return null;
     }
-    public boolean isExpense (Operation operation) {
-        if (operation.getTypeOperation().getName().equals("EXPENSE")) {
-            return true;
-        } else {
-            return false;
-        }
-    }
+
     public void displayOperationList (List<Operation> userOperations) {
         for(Operation op : userOperations) {
             if (op.getTypeOperation() != null) {
@@ -204,7 +204,31 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
     }
     public InlineKeyboardMarkup getListCategories (List<Category> categoryList,Operation operation) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        /*List<Category> categoryList = categoryService.findAllCategories();*/
+        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
+        //TODO: Bad approach i think, need a find better solution
+        for (int i = 0; i < categoryList.size(); i+= 2) {
+            List<InlineKeyboardButton> listButton = new ArrayList<>();
+            if (i + 1 < categoryList.size()) {
+                for (int j = 0; j < 2; j++) {
+                    InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i+j).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i+j).getName(),categoryList.get(i+j).getId()));
+                    listButton.add(button);
+                }
+            } else {
+                InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i).getName(),categoryList.get(i).getId()));
+                listButton.add(button);
+            }
+            buttons.add(listButton);
+        }
+        List<InlineKeyboardButton> listBtn = new ArrayList<>();
+        listBtn.add(new InlineKeyboardButton().setText(replyMessagesService.getReplyText("button.back",Emojis.BACK)).setCallbackData(String.format("%s|%d","Back",operation.getId())));
+        buttons.add(listBtn);
+        markup.setKeyboard(buttons);
+        // String chat_ids = update.getMessage().getChatId().toString();
+        return markup;
+    }
+   /* public InlineKeyboardMarkup getListCategories (List<Category> categoryList,Operation operation) {
+        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
+        *//*List<Category> categoryList = categoryService.findAllCategories();*//*
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         for (int i = 0; i < categoryList.size(); i++) {
             InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i).getName(),categoryList.get(i).getId()));
@@ -218,7 +242,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         markup.setKeyboard(buttons);
         // String chat_ids = update.getMessage().getChatId().toString();
         return markup;
-    }
+    }*/
     private static DateFormatSymbols myDateRU = new DateFormatSymbols(){
 
         @Override

@@ -48,7 +48,8 @@ public class TelegramFacade {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = message.getText();
             log.info("New message from User: {} , chat_id {} with text {}",message.getFrom(),message.getChatId(),message.getText());
-            replyMessage = handleInputMessageText(message);
+            replyMessage =
+                    handleInputMessageText(message);
         } else if (update.hasCallbackQuery()) {
             CallbackQuery callbackQuery = update.getCallbackQuery();
             log.info(
@@ -96,16 +97,6 @@ public class TelegramFacade {
             switch (textMessage) {
                 case "/start":
                     botState = BotState.START_STATE;
-                    /*log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), message.getChatId(), message.getText());
-                    com.denchik.demo.model.User userFromDB = userService.findUserByChat_id(message.getChatId());
-                    if (userFromDB != null) {
-                        return new SendMessage(message.getChatId(), String.format("Привет %s, твой id в Базе данных Heroku = %d", message.getFrom().getFirstName(), userFromDB.getId()));
-                    } else {
-                        userFromDB = new com.denchik.demo.model.User(message.getChatId(), message.getFrom().getFirstName(), message.getFrom().getLastName(),0);
-                        log.info("Додаємо нового користувача в базу:  chat_id {} username {} ", message.getChatId(), message.getFrom().getUserName());
-                        userService.addUser(userFromDB);
-                        return new SendMessage(message.getChatId(), "Вітаю, ви користуєтесь нашим ботом вперше\nВиконуємо реєстрацію:");
-                    }*/
                     break;
                 case "/list" :
                     botState = BotState.LIST_OPERATION;
@@ -113,26 +104,36 @@ public class TelegramFacade {
                 case "/balance" :
                     botState = BotState.GET_BALANCE;
                     break;
+                case "/report" :
+                    botState = BotState.REPORT;
+                    break;
+                case "/export" :
+                    botState = BotState.EXPORT;
+                    break;
                 case "/setbal" :
                     botState = BotState.SET_BALANCE;
                     break;
                 case "/delete":
                     botState = BotState.DELETE_CONNECTION;
-                    //reply = getConfirmationDeleteKeyboard(message);
                     break;
-                    /*log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), message.getChatId(), message.getText());
-                    return getConfirmationDeleteKeyboard(update);*/
-                case "/report":
-                   botState = BotState.WAIT_OPERATION;
-                   break;
+                case "/lang" :
+                    botState = BotState.LANGUAGE_CHOOSE;
+                    break;
+                case "/help" :
+                    botState = BotState.HELP;
+                    break;
                 default:
                     user = userService.findUserByChat_id(message.getChatId());
-                    if (user.getState_id() != null) {
-                        botState = BotState.getBotStateById(user.getState_id());
-                    } else {
+                    if (user == null) {
                         botState = BotState.NONE;
+                    } else {
+                        if (user.getState_id() != null) {
+                            botState = BotState.getBotStateById(user.getState_id());
+                        } else {
+                            botState = BotState.NONE;
+                        }
+                        break;
                     }
-                    break;
             }
         try {
             user = userService.findUserByChat_id(message.getChatId());
@@ -142,12 +143,6 @@ public class TelegramFacade {
                 userService.saveUser(user);
             }
             reply = botStateContext.processInputMessage(botState,message);
-            /*user = userService.findUserByChat_id(message.getChatId());
-            if (user != null) {
-                user.setState_id(botState);
-                log.info(user.toString());
-                userService.saveUser(user);
-            }*/
         } catch (Exception e) {
             reply = new SendMessage(message.getChatId(),"Can`t handle update on state : " + botState);
             log.info("Can't handle state : {}",botState);
@@ -155,48 +150,11 @@ public class TelegramFacade {
         }
         return reply;
     }
-
-    public SendMessage getConfirmationDeleteKeyboard (Message message) {
-        SendMessage replyMessage = new SendMessage().setText(replyMessagesService.getReplyText("reply.useRelation.confirmation.delete",Emojis.WARNING));
-        replyMessage.setChatId(message.getChatId());
-        InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
-        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        List<InlineKeyboardButton> button1 = new ArrayList<>();
-        InlineKeyboardButton yesButton = new InlineKeyboardButton().setText("Так");
-        InlineKeyboardButton noButton = new InlineKeyboardButton().setText("Ні");
-        yesButton.setCallbackData("Yes");
-        noButton.setCallbackData("No");
-        button1.add(yesButton);
-        button1.add(noButton);
-        buttons.add(button1);
-        markup.setKeyboard(buttons);
-        replyMessage.setReplyMarkup(markup);
-        return replyMessage;
-    }
         private boolean isOperationAmount (String messageText) {
             String regex = "\\d+";
             Pattern digits = Pattern.compile(regex);
             boolean isOperationText = digits.matcher(messageText).matches();
             return isOperationText;
         }
-        public SendMessage getChooseOperationReplyInlineKeyboard (Message message) {
-        Long chat_id = message.getChatId();
-        SendMessage sendMessage = replyMessagesService.getReplyMessage(chat_id,"reply.category.chooseTypeOperation",Emojis.RECORD);
-        InlineKeyboardMarkup chooseOperationTypeMarkup = new InlineKeyboardMarkup();
-        InlineKeyboardButton incomes = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.incomes",Emojis.INCOME)).setCallbackData("Income");
-        InlineKeyboardButton expenses = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.expenses",Emojis.EXPENSE)).setCallbackData("Expense");
-        InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData("Cancel");
-        List<InlineKeyboardButton> row1 = new ArrayList<>();
-        List<InlineKeyboardButton> row2 = new ArrayList<>();
-        row1.add(incomes);
-        row1.add(expenses);
-        row2.add(cancel);
-        List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
-        buttons.add(row1);
-        buttons.add(row2);
-        chooseOperationTypeMarkup.setKeyboard(buttons);
-        sendMessage.setReplyMarkup(chooseOperationTypeMarkup);
-        return sendMessage;
-    }
 
 }

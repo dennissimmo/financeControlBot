@@ -35,13 +35,20 @@ public class Operation extends AbstractBaseEntity {
     private User user;
     @Override
     public String toString () {
-        return "Amount : " + amount + "User : " + user.getFirst_name() + "Source : " + source.getTypeSource() + "Type : " + typeOperation.getName();
+        return "Amount : " + amount + " User : " + user.getFirst_name() + " Source : " + source.getTypeSource() + " Type : " + typeOperation.getName();
     }
     public Operation () {
 
     }
     public Operation (double amount,String raw_text,Source source,User user) {
         this.amount = amount;
+        this.raw_text = raw_text;
+        this.source = source;
+        this.user = user;
+    }
+    public Operation (double amount,String raw_text,String note,Source source,User user) {
+        this.amount = amount;
+        this.note = note;
         this.raw_text = raw_text;
         this.source = source;
         this.user = user;
@@ -109,5 +116,22 @@ public class Operation extends AbstractBaseEntity {
 
     public void setCreateAt(Date createAt) {
         this.createAt = createAt;
+    }
+    public static boolean isExpense (Operation operation) {
+        if (operation.getTypeOperation().getName().equals("EXPENSE")) {
+            return true;
+        } else {
+            return false;
+        }
+    }
+    public String addSignForOperation (Operation operation) {
+        TypeOperation typeOperation  = operation.getTypeOperation();
+        if (typeOperation.getName().equals("EXPENSE")) {
+            return String.format("- %.2f",operation.getAmount());
+        }
+        if (typeOperation.getName().equals("INCOME")) {
+            return String.format("+ %.2f",operation.getAmount());
+        }
+        return "";
     }
 }

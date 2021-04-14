@@ -17,34 +17,47 @@ public class BotStateContext {
     public BotStateContext(List<InputMessageHandler> messageHandlers) {
         messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(),handler));
     }
-
     public SendMessage processInputMessage(BotState currentState, Message message) {
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
         return currentMessageHandler.handle(message);
     }
 
     private InputMessageHandler findMessageHandler(BotState currentState) {
-        if (currentState == BotState.START_STATE) {
+        if (isStartState(currentState)) {
             return messageHandlers.get(BotState.START_STATE);
         }
         if (isBalanceState(currentState)) {
             return messageHandlers.get(BotState.SET_BALANCE);
         }
-       /* if (isTrainSearchState(currentState)) {
-            return messageHandlers.get(BotState.TRAINS_SEARCH);
+        if (isOperationAdd(currentState)) {
+            return messageHandlers.get(BotState.WAIT_OPERATION);
         }
-
-        if (isStationSearchState(currentState)) {
-            return messageHandlers.get(BotState.STATIONS_SEARCH);
-        }*/
-
         return messageHandlers.get(currentState);
+    }
+    private boolean isOperationAdd (BotState state) {
+        switch (state) {
+            case WAIT_OPERATION:
+            case SET_AMOUNT_OPERATION:
+                return true;
+            default:
+                return false;
+        }
     }
     private boolean isBalanceState (BotState state) {
         switch (state) {
             case SET_BALANCE:
             case ASK_BALANCE:
             case CONFIRM_BALANCE_SET:
+                return true;
+            default:
+                return false;
+        }
+    }
+    private boolean isStartState (BotState state) {
+        switch (state) {
+            case START_STATE:
+            case LANGUAGE_CHOOSE:
+            case ASK_LOCALE:
                 return true;
             default:
                 return false;

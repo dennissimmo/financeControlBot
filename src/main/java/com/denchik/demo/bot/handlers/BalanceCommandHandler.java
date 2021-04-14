@@ -45,7 +45,7 @@ public class BalanceCommandHandler implements InputMessageHandler{
                 userService.saveUser(currentUser);
                 } else {
                 currentUser.setState_id(BotState.NONE);
-                reply =  replyMessagesService.getReplyMessage(message.getChatId(),"reply.command.start.authorized.setBalance",currentUser.getFirst_name());
+                reply =  replyMessagesService.getReplyMessage(message.getChatId(),"reply.command.start.authorized.setBalance",currentUser.getFirst_name(),Emojis.SMILE);
                 userService.saveUser(currentUser);
             }
         }

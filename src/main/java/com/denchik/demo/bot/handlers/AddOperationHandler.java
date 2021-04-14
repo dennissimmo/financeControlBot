@@ -17,6 +17,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
 @Component
@@ -35,6 +36,7 @@ public class AddOperationHandler implements InputMessageHandler {
     @Override
     public SendMessage handle(Message message) {
         User user = userService.findUserByChat_id(message.getChatId());
+        replyMessagesService.setLocaleMessageService(user.getLanguage_code());
         if (user.getState_id().equals(BotState.WAIT_OPERATION.ordinal()))
         {
             user.setState_id(BotState.SET_AMOUNT_OPERATION);
@@ -57,9 +59,41 @@ public class AddOperationHandler implements InputMessageHandler {
                 operationService.addOperation(operation);
                 reply = getChooseOperationReplyInlineKeyboard(message,operation.getId());
                 userService.saveUser(currentUser);
+            } else if (isOperationWithNote(userInput)) {
+                String note = getNoteFromInput(userInput);
+                Double amountOperation = getAmountFromInput(userInput);
+                Operation operation = new Operation(amountOperation,userInput,note,sourceService.getSourceByTypeSource("Готівка"),currentUser);
+                currentUser.setState_id(BotState.WAIT_OPERATION);
+                operationService.addOperation(operation);
+                reply = getChooseOperationReplyInlineKeyboard(message,operation.getId());
+                userService.saveUser(currentUser);
+            } else {
+                System.out.println("Incorrect format operation");
+                reply = replyMessagesService.getReplyMessage(chat_id,"reply.operation.exampleOperation",Emojis.WARNING).enableHtml(true);
+                currentUser.setState_id(BotState.WAIT_OPERATION);
+                userService.saveUser(currentUser);
             }
         }
         return reply;
+    }
+    public String getNoteFromInput (String input)
+    {
+        Pattern pattern = Pattern.compile("(\\d+[\\.]{0,1}\\d+)[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}([a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+)");
+        Matcher matcher = pattern.matcher(input.trim());
+        matcher.find();
+        String noteOperation = matcher.group(2).trim();
+
+        return noteOperation;
+    }
+    public Double getAmountFromInput (String input) {
+        Pattern pattern = Pattern.compile("(\\d+[\\.]{0,1}\\d+)[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}([a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+)");
+        Matcher matcher = pattern.matcher(input.trim());
+        matcher.find();
+        System.out.println(matcher.group(0));
+        System.out.println(matcher.group(1));
+        System.out.println(matcher.group(2));
+        Double amountOperation = Double.parseDouble(matcher.group(1).trim());
+        return amountOperation;
     }
     public SendMessage getChooseOperationReplyInlineKeyboard (Message message, int idOperation) {
         Long chat_id = message.getChatId();
@@ -80,8 +114,14 @@ public class AddOperationHandler implements InputMessageHandler {
         sendMessage.setReplyMarkup(chooseOperationTypeMarkup);
         return sendMessage;
     }
+    private boolean isOperationWithNote (String messageText) {
+        String regex = "\\d+[\\.]{0,1}\\d+[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}[a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+";
+        Pattern digits = Pattern.compile(regex);
+        boolean isOperationText = digits.matcher(messageText).matches();
+        return isOperationText;
+    }
     private boolean isCorrectFormatOperation (String messageText) {
-        String regex = "\\d+";
+        String regex = "\\d+[\\.]{0,1}\\d+";
         Pattern digits = Pattern.compile(regex);
         boolean isOperationText = digits.matcher(messageText).matches();
         return isOperationText;
