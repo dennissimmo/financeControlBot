@@ -54,7 +54,7 @@ public class ExportCommandHandler implements InputMessageHandler{
         List<Operation> userOperations = operationService.findOperationsByUser(currentUser);
         List<Category> distinctOperationCategory = userOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
         if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {
-            OperationExcelExport export = new OperationExcelExport(userOperations,distinctOperationCategory,operationService);
+            OperationExcelExport export = new OperationExcelExport(userOperations,distinctOperationCategory,operationService,currentUser);
             LocalDateTime dateObj = LocalDateTime.now();
             String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
             String fileName = "ControlMoneyBot_" + currentDataTime;

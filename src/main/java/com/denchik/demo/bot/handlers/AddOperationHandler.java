@@ -15,6 +15,7 @@ import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Matcher;
@@ -78,7 +79,7 @@ public class AddOperationHandler implements InputMessageHandler {
     }
     public String getNoteFromInput (String input)
     {
-        Pattern pattern = Pattern.compile("(\\d+[\\.]{0,1}\\d+)[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}([a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+)");
+        Pattern pattern = Pattern.compile("([\\d]{1,10}[\\.]{0,1}[\\d]{0,3})[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}([a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+)");
         Matcher matcher = pattern.matcher(input.trim());
         matcher.find();
         String noteOperation = matcher.group(2).trim();
@@ -86,7 +87,7 @@ public class AddOperationHandler implements InputMessageHandler {
         return noteOperation;
     }
     public Double getAmountFromInput (String input) {
-        Pattern pattern = Pattern.compile("(\\d+[\\.]{0,1}\\d+)[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}([a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+)");
+        Pattern pattern = Pattern.compile("([\\d]{1,10}[\\.]{0,1}[\\d]{0,3})[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}([a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+)");
         Matcher matcher = pattern.matcher(input.trim());
         matcher.find();
         System.out.println(matcher.group(0));
@@ -101,7 +102,9 @@ public class AddOperationHandler implements InputMessageHandler {
         InlineKeyboardMarkup chooseOperationTypeMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton incomes = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.incomes",Emojis.INCOME)).setCallbackData(String.format("%s|%d","Income",idOperation));
         InlineKeyboardButton expenses = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.typeOperation.expenses",Emojis.EXPENSE)).setCallbackData(String.format("%s|%d","Expense",idOperation));
-        //InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData(String.format("%s|%d","Cancel",idOperation));
+        byte [] sizeCallBack = expenses.getCallbackData().getBytes(StandardCharsets.UTF_8);
+        System.out.println("Lengthh byte" + sizeCallBack.length);
+        //InlineKincomes.getCallbackData().encode('utf-8');eyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData(String.format("%s|%d","Cancel",idOperation));
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         row1.add(incomes);
@@ -115,13 +118,13 @@ public class AddOperationHandler implements InputMessageHandler {
         return sendMessage;
     }
     private boolean isOperationWithNote (String messageText) {
-        String regex = "\\d+[\\.]{0,1}\\d+[\\s]{0,1}[\\-]{0,1}[\\s]{0,1}[a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+";
+        String regex = "[\\d]{1,7}[\\.]{0,1}[\\d]{0,3}[\\s]{0,1}[\\-]{1}[\\s]{0,1}[a-zA-ZА-ЯҐЄІЇа-яґєії0-9\\'\\(\\)\\:\\,\\.\\s\\-\\_]+";
         Pattern digits = Pattern.compile(regex);
         boolean isOperationText = digits.matcher(messageText).matches();
         return isOperationText;
     }
     private boolean isCorrectFormatOperation (String messageText) {
-        String regex = "\\d+[\\.]{0,1}\\d+";
+        String regex = "[\\d]{1,7}[\\.]{0,1}[\\d]{0,3}";
         Pattern digits = Pattern.compile(regex);
         boolean isOperationText = digits.matcher(messageText).matches();
         return isOperationText;

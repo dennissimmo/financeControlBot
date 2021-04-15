@@ -39,9 +39,10 @@ public class BalanceCommandHandler implements InputMessageHandler{
         if (botState.equals(BotState.GET_BALANCE)) {
             Balance userBalance = currentUser.getBalance();
             if (userBalance != null) {
+                replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());
                 currentUser.setState_id(BotState.WAIT_OPERATION);
                 Source source = userBalance.getSource();
-                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.balance", Emojis.BANK,source.getTypeSource(),String.format("%.1f",userBalance.getAmount()),Emojis.DOLLAR,convertToDollar(userBalance.getAmount()));
+                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.balance", Emojis.BANK,Emojis.DOLLAR,String.format("%.1f",userBalance.getAmount()),convertToDollar(userBalance.getAmount()));
                 userService.saveUser(currentUser);
                 } else {
                 currentUser.setState_id(BotState.NONE);

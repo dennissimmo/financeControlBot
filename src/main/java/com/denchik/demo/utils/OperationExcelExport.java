@@ -2,6 +2,7 @@ package com.denchik.demo.utils;
 
 import com.denchik.demo.model.Category;
 import com.denchik.demo.model.Operation;
+import com.denchik.demo.model.User;
 import com.denchik.demo.service.OperationService;
 import org.apache.poi.ss.usermodel.*;
 import org.apache.poi.xssf.usermodel.XSSFFont;
@@ -21,13 +22,15 @@ public class OperationExcelExport {
     private List<Operation> operationList;
     private List<Category> distinctCategories;
     private OperationService operationService;
+    private User user;
     public OperationExcelExport () {
 
     }
-    public OperationExcelExport(List<Operation> operationList,List<Category> categories,OperationService operationService) {
+    public OperationExcelExport(List<Operation> operationList, List<Category> categories, OperationService operationService, User user) {
         this.operationList = operationList;
         this.distinctCategories = categories;
         this.operationService = operationService;
+        this.user = user;
         List<String> sheetNames = new ArrayList<>();
         for (Category category : distinctCategories) {
             sheetNames.add(category.getName());
@@ -52,7 +55,7 @@ public class OperationExcelExport {
             Row headerRow = sheetsCategory.get(i).createRow(0);
             CellStyle headerCellStyle = workbook.createCellStyle();
             headerCellStyle.setFillForegroundColor(IndexedColors.GREY_25_PERCENT.getIndex());
-            System.out.println("Index of LIGHT_GREEN = " + IndexedColors.BRIGHT_GREEN1.getIndex());
+            //System.out.println("Index of LIGHT_GREEN = " + IndexedColors.BRIGHT_GREEN1.getIndex());
             headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             //headerCellStyle.setFillPattern(FillPatternType.SOLID_FOREGROUND);
             headerCellStyle.setFont(font);
@@ -79,7 +82,7 @@ public class OperationExcelExport {
     public void writeCellsDataRows () {
         for (int sheetIndex = 0; sheetIndex < sheetsCategory.size(); sheetIndex++) {
             int startRowIndex = 1;
-            List<Operation> operationByCategory = operationService.findOperationByCategory(distinctCategories.get(sheetIndex));
+            List<Operation> operationByCategory = operationService.findOperationByCategoryAndUser(distinctCategories.get(sheetIndex),user);
             for (int j = 0; j < operationByCategory.size() ; j++) {
                 sheetsCategory.get(sheetIndex).createRow(startRowIndex).createCell(0).setCellValue(startRowIndex);
                 sheetsCategory.get(sheetIndex).getRow(startRowIndex).createCell(1).setCellValue(formatData.format(operationByCategory.get(j).getCreateAt()));

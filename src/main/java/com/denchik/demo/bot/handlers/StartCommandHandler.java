@@ -60,7 +60,7 @@ public class StartCommandHandler implements InputMessageHandler{
         org.telegram.telegrambots.meta.api.objects.User telegram = message.getFrom();
         User user = userService.findUserByChat_id(chat_id);
         if (user == null) {
-            user = new User(chat_id, telegram.getFirstName(), telegram.getLastName(),"ua-UA", telegram.getUserName(), 0);
+            user = new User(chat_id, telegram.getFirstName(), telegram.getLastName(), telegram.getUserName(), "ua-UA",0);
             user.setState_id(BotState.NONE);
             userService.saveUser(user);
             log.info("Add new user: username : {} chat_id : {} firstname : {}",telegram.getUserName(),message.getChatId(),telegram.getFirstName());
@@ -71,7 +71,9 @@ public class StartCommandHandler implements InputMessageHandler{
         } else {
             user.setState_id(BotState.WAIT_OPERATION);
             userService.saveUser(user);
-            replyMessagesService.setLocaleMessageService(user.getLanguage_code());
+            if (user.getLanguage_code() != null) {
+                replyMessagesService.setLocaleMessageService(user.getLanguage_code());
+            }
             reply = new SendMessage()
                     .setText(replyMessagesService.getReplyText("reply.language.ask", Emojis.RECORD))
                     .setChatId(chat_id)

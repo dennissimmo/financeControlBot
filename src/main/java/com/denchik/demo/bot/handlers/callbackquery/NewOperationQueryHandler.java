@@ -42,7 +42,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
     private static final String EXPENSE = "Expense";
     private static final String CANCEL = "Cancel";
     private static final String BACK = "Back";
-    private static final String CATEGORY = "category";
+    private static final String CATEGORY = "ctg";
     private ParseQueryDataService parseQueryDataService;
     private ReplyMessagesService replyMessagesService;
     private UserService userService;
@@ -210,11 +210,11 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
             List<InlineKeyboardButton> listButton = new ArrayList<>();
             if (i + 1 < categoryList.size()) {
                 for (int j = 0; j < 2; j++) {
-                    InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i+j).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i+j).getName(),categoryList.get(i+j).getId()));
+                    InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i+j).getName()).setCallbackData(String.format("ctg|%d|%s|%d",operation.getId(),categoryList.get(i+j).getTypeCategory().getName_type(),categoryList.get(i+j).getId()));
                     listButton.add(button);
                 }
             } else {
-                InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i).getName()).setCallbackData(String.format("category|%d|%s|%d",operation.getId(),categoryList.get(i).getName(),categoryList.get(i).getId()));
+                InlineKeyboardButton button = new InlineKeyboardButton().setText(categoryList.get(i).getName()).setCallbackData(String.format("ctg|%d|%s|%d",operation.getId(),categoryList.get(i).getTypeCategory().getName_type(),categoryList.get(i).getId()));
                 listButton.add(button);
             }
             buttons.add(listButton);
