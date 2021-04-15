@@ -1,5 +1,5 @@
 # FinanceBotControl
-Telegram Bot for controle incomes and expenses
+Telegram Bot for control incomes and expenses
 Username: @control_your_moneyBot
 List of functional commands and their purpose :
 
@@ -20,5 +20,4 @@ List of functional commands and their purpose :
   * Webhook
   * Telegram Bot API
   * Spring Data JPA
-  * Apache POI
   * PostgreSQL
