@@ -45,8 +45,12 @@ public class CategoryService{
         return categoryRepository.findDistinctOperationCategoryByUser(userId);
     }
     @Transactional
-    public List<Category> getExpenses () {
-        return categoryRepository.findCategoriesByTypeCategoryByName("Витрати");
+    public List<Category> getExpenses (String locale) {
+        return categoryRepository.findCategoriesByTypeCategoryByNameAndLocale("Витрати",locale);
+    }
+    @Transactional
+    public List<Category> getIncomes (String locale) {
+        return categoryRepository.findCategoriesByTypeCategoryByNameAndLocale("Надходження",locale);
     }
     @Transactional
     public List<Category> getIncomes () {

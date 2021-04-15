@@ -18,7 +18,8 @@ public class Category extends AbstractBaseEntity implements Serializable {
     @OneToOne
     @JoinColumn(name = "type_category_id",nullable = false)
     private TypeCategory typeCategory;
-
+    @Column(name = "locale",nullable = false)
+    private String locale;
     @Override
     public String toString () {
         return "Id: " + getId() + "Name: " + getName();
@@ -38,5 +39,13 @@ public class Category extends AbstractBaseEntity implements Serializable {
 
     public void setTypeCategory(TypeCategory typeCategory) {
         this.typeCategory = typeCategory;
+    }
+
+    public String getLocale() {
+        return locale;
+    }
+
+    public void setLocale(String locale) {
+        this.locale = locale;
     }
 }

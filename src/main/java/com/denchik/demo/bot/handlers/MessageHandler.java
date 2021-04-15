@@ -97,12 +97,6 @@ public class MessageHandler {
                         Category category = categoryService.findByCategoryName("Спорт");
                         System.out.println(category.toString());
                         return new SendMessage(chat_id.toString(),category.toString());
-                    case "/incomes" :
-                        List<Category> incomes = categoryService.getIncomes();
-                        return getListCategories(update,incomes);
-                    case "/expenses" :
-                        List<Category> expenses = categoryService.getExpenses();
-                        return getListCategories(update,expenses);
                     case "/list" :
                         List<Category> allCategories = categoryService.findAllCategories();
                         return getListCategories(update,allCategories);

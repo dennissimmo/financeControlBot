@@ -62,7 +62,7 @@ public class SetBalanceCommandHandler implements InputMessageHandler {
                 currentUser.setState_id(BotState.CONFIRM_BALANCE_SET);
                 userService.saveUser(currentUser);
             } else {
-                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.setBalance.change",Emojis.BANK,userBalance.getSource().getTypeSource(),String.format("%.1f UAH",userBalance.getAmount()),Emojis.DOLLAR,Emojis.CLIP);
+                reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.setBalance.change",Emojis.BANK,String.format("%.1f UAH",userBalance.getAmount()),Emojis.DOLLAR,Emojis.CLIP);
                 currentUser.setState_id(BotState.CONFIRM_BALANCE_SET);
                 userService.saveUser(currentUser);
             }
@@ -75,7 +75,7 @@ public class SetBalanceCommandHandler implements InputMessageHandler {
                     userBalance = new Balance(amount,source);
                     log.info("Create new balance : amount : {} source : {} id: {} ",amount,source.getTypeSource(),userBalance.getId());
                     currentUser.setBalance(userBalance);
-                    reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.setBalance.confirmed",Emojis.BANK,source.getTypeSource(),String.format("%.1f UAH",amount),Emojis.DOLLAR);
+                    reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.setBalance.confirmed",Emojis.BANK,Emojis.DOLLAR,String.format("%.1f",userBalance.getAmount()));
                     currentUser.setState_id(BotState.WAIT_OPERATION); // Якщо користувач коректно вказав баланс, переводимо бота в стан очікування ведення операції
                     balanceService.saveBalance(userBalance);
                     userService.saveUser(currentUser);

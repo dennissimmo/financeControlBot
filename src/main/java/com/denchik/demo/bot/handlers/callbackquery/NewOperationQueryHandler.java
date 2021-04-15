@@ -95,7 +95,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         replyMessagesService.setLocaleMessageService(localeTag);
         Operation operation = operationService.findOperationById(idHandledOperation);
             if (callBackData.equals(INCOME)) {
-                List<Category> incomeCategories = categoryService.getIncomes();
+                List<Category> incomeCategories = categoryService.getIncomes(currentUser.getLanguage_code());
                 InlineKeyboardMarkup keyboardMarkup = getListCategories(incomeCategories,operation);
                 operation.setTypeOperation(typeOperationService.getTypeByName(INCOME));
                 operationService.saveOperation(operation);
@@ -104,7 +104,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 //replyMessagesService.getReplyText("reply.category.chooseCategory.income",Emojis.EURO,operation.getAmount())
               controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseCategory.income", Emojis.WRITINGHANDLE,operation.getAmount()),keyboardMarkup);
             } else if (callBackData.equals(EXPENSE)) {
-                List<Category> expenseCategories = categoryService.getExpenses();
+                List<Category> expenseCategories = categoryService.getExpenses(currentUser.getLanguage_code());
                 InlineKeyboardMarkup keyboardMarkup = getListCategories(expenseCategories,operation);
                 operation.setTypeOperation(typeOperationService.getTypeByName(EXPENSE));
                 operationService.saveOperation(operation);
