@@ -1,6 +1,7 @@
 package com.denchik.demo.bot.handlers;
 
 import com.denchik.demo.bot.BotState;
+import com.denchik.demo.model.User;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;
@@ -22,6 +23,10 @@ public class HelpCommandHandler implements InputMessageHandler{
     public SendMessage handle(Message message) {
         System.out.println("Unlucky");
         Long chat_id = message.getChatId();
+        User user = userService.findUserByChat_id(message.getChatId());
+        if (user != null) {
+            replyMessagesService.setLocaleMessageService(user.getLanguage_code());
+        }
         SendMessage reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.help.commands", userService.getCountUsers(),Emojis.PUNCH).enableHtml(true);
         return reply;
     }
