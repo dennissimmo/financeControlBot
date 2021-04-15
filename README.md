@@ -21,3 +21,6 @@ List of functional commands and their purpose :
   * Telegram Bot API
   * Spring Data JPA
   * PostgreSQL
+ # Example
+![image](https://user-images.githubusercontent.com/59365385/114942015-920d9980-9e4c-11eb-9c66-ed894f1693f3.png)
+
