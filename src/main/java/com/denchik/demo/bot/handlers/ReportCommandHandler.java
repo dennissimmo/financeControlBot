@@ -74,7 +74,7 @@ public class ReportCommandHandler implements InputMessageHandler{
         } else if (localeTag.equals("ru-RU")) {
             response.append(replyMessagesService.getReplyText("report.header",Emojis.NOTEPAD,String.format("%s %d",FULL_MONTH_RU.format(getDateForHeader),currentYear)));
         } else {
-            response.append(replyMessagesService.getReplyText("report.header",Emojis.NOTEPAD,String.format("%s %d",formatData.format(getDateForHeader),currentYear)));
+            response.append(replyMessagesService.getReplyText("report.header",Emojis.NOTEPAD,String.format("%s %d",getMonthNameFromLocalDate(currentYear,indexCurrentMonth),currentYear)));
         }
         response.append("\n");
         response.append("\n");
@@ -140,6 +140,12 @@ public class ReportCommandHandler implements InputMessageHandler{
             e.printStackTrace();
         }
         return date;
+    }
+    public String getMonthNameFromLocalDate (int currentYear, int indexCurrentMonth) {
+        LocalDate myLocalDate = LocalDate.of(currentYear,indexCurrentMonth,1);
+        Month month = myLocalDate.getMonth();
+        System.out.println(month.toString());
+        return month.toString();
     }
     /*@Override
     public SendMessage handle(Message message) {

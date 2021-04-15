@@ -48,8 +48,8 @@ public class DeleteCommandHandler implements InputMessageHandler{
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         List<InlineKeyboardButton> button1 = new ArrayList<>();
-        InlineKeyboardButton yesButton = new InlineKeyboardButton().setText("Так");
-        InlineKeyboardButton noButton = new InlineKeyboardButton().setText("Ні");
+        InlineKeyboardButton yesButton = new InlineKeyboardButton().setText(replyMessagesService.getReplyText("button.confirmation.yes"));
+        InlineKeyboardButton noButton = new InlineKeyboardButton().setText(replyMessagesService.getReplyText("button.confirmation.no"));
         yesButton.setCallbackData("Yes");
         noButton.setCallbackData("No");
         button1.add(yesButton);

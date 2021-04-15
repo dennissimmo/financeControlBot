@@ -40,7 +40,7 @@ public class ScheduleService {
         this.controlMoneyTelegramBot = controlMoneyTelegramBot;
         this.userService = userService;
     }
-    @Scheduled(cron = "0 52 21 * * *")
+   /* @Scheduled(cron = "0 52 21 * * *")
     public void sendNotificationForAllUsers () {
         SendMessage message = new SendMessage();
         message.enableHtml(true);
@@ -51,7 +51,7 @@ public class ScheduleService {
         message.setChatId(user.getChatId());
         controlMoneyTelegramBot.executeSendMessage(message);
     }
-    }
+    }*/
     //@Bean
    /* public TaskScheduler poolScheduler() {
         ThreadPoolTaskScheduler scheduler = new ThreadPoolTaskScheduler();

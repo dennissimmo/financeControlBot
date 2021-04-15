@@ -63,6 +63,7 @@ public class GenerateReportQueryHandler implements CallbackQueryHandler {
         StringBuilder response = new StringBuilder();
         LocalDate currentData = LocalDate.now();
         Month currentMonthName = currentData.getMonth();
+        Month month = Month.of(indexCurrentMonth);
         Date getDateForHeader = getDateFromLocalDate(currentYear,indexCurrentMonth);
         String headerMessage;
         log.info ("Month : {} Year: {} Number: {} ",currentMonthName,currentYear,currentMonthName.getValue());
@@ -71,7 +72,7 @@ public class GenerateReportQueryHandler implements CallbackQueryHandler {
         TypeOperation incomeType = typeOperationService.getTypeByName("Income");
         TypeOperation expenseType = typeOperationService.getTypeByName("Expense");
         response.append(String.format("<b>%s</b>",replyMessagesService.getReplyText("report.header",
-                Emojis.NOTEPAD,String.format(" %s %d ",getNameMonthByLocale(localeTag,getDateForHeader),currentYear))));
+                Emojis.NOTEPAD,String.format(" %s %d ",getNameMonthByLocale(localeTag,getDateForHeader,month),currentYear))));
         response.append("\n\n");
         List<Operation> incomeOperations = userOperations.stream().filter(operation -> operation.getTypeOperation().getName().equals(incomeType.getName())).collect(Collectors.toList());
         //List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(incomeType,currentUser);
@@ -124,13 +125,13 @@ public class GenerateReportQueryHandler implements CallbackQueryHandler {
         controlMoneyTelegramBot.editMessage(chat_id,messageId,response.toString(),changeMonthKeyboard(indexCurrentMonth,currentYear, nextOrPrevious,localeTag,getDateForHeader));
         return new SendMessage();
     }
-    public String getNameMonthByLocale (String localeTag,Date date) {
+    public String getNameMonthByLocale (String localeTag,Date date,Month month) {
         if (localeTag.equals("ua-UA")) {
                    return FULL_MONTH_UA.format(date);
         } else if (localeTag.equals("ru-RU")) {
             return FULL_MONTH_RU.format(date);
         } else {
-            return formatData.format(date);
+            return month.toString();
         }
     }
     public InlineKeyboardMarkup changeMonthKeyboard (int month, int year,String operationType,String localeTag, Date date) {

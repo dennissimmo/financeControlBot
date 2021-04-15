@@ -49,7 +49,8 @@ CREATE TABLE category
 (
     id INTEGER PRIMARY KEY DEFAULT nextval('global_seq'),
     name VARCHAR (100) UNIQUE NOT NULL,
-    type_category_id INTEGER REFERENCES type_category(id)
+    type_category_id INTEGER REFERENCES type_category(id),
+    locale VARCHAR (100)
 );
 
 CREATE TABLE operation
