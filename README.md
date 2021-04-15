@@ -1,6 +1,6 @@
 # FinanceBotControl
 Telegram Bot for control incomes and expenses
-Username: @control_your_moneyBot
+Link for bot : [@control_your_moneyBot](@control_your_moneyBot)
 List of functional commands and their purpose :
 
 * /start - The initial command allows you to specify the language of the interface and performs user registration
