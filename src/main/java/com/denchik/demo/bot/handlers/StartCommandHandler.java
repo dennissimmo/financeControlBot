@@ -85,7 +85,7 @@ public class StartCommandHandler implements InputMessageHandler{
         InlineKeyboardMarkup chooseLanguageMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton english = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.english",Emojis.ENGLISH)).setCallbackData("language|en-UK");
         InlineKeyboardButton ukrainian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.ukrainian",Emojis.UKRAINE)).setCallbackData("language|ua-UA");
-        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-RU");
+        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-Ru");
         //InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData(String.format("%s|%d","Cancel",idOperation));
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
