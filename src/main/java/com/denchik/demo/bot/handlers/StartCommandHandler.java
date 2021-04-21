@@ -60,7 +60,7 @@ public class StartCommandHandler implements InputMessageHandler{
         InlineKeyboardMarkup chooseLanguageMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton english = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.english",Emojis.ENGLISH)).setCallbackData("language|en-UK");
         InlineKeyboardButton ukrainian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.ukrainian",Emojis.UKRAINE)).setCallbackData("language|ua-UA");
-        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-Ru");
+        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-RU");
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         List<InlineKeyboardButton> row3 = new ArrayList<>();
