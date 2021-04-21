@@ -64,5 +64,7 @@ CREATE TABLE operation
     raw_text VARCHAR (50) NOT NULL,
     type_operation_id INTEGER REFERENCES type_operation(id),
     user_id INTEGER REFERENCES users(id),
-    source_id INTEGER REFERENCES source_info(id)
+    source_id INTEGER REFERENCES source_info(id),
+    current_balance DOUBLE PRECISION
+
 );
