@@ -34,7 +34,7 @@ public class DeleteCommandHandler implements InputMessageHandler{
         if (user != null) {
             return getConfirmationDeleteKeyboard(message);
         }
-        return new SendMessage(); // TODO: set Text for Message, for start using bot, call command /start
+        return replyMessagesService.getReplyMessage(message.getChatId(),"reply.user.new");
     }
 
     @Override

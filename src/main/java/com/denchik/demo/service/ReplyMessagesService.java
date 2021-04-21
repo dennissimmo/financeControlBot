@@ -31,15 +31,7 @@ public class ReplyMessagesService {
     public void setLocaleMessageService(String localeTag) {
         localeMessageService.setLocale(Locale.forLanguageTag(localeTag));
     }
-    /*public SendMessage getSuccessReplyMessage(long chatId, String replyMessage) {
-        return new SendMessage(chatId, getEmojiReplyText(replyMessage, Emojis.SUCCESS_MARK));
-    }
-
-    public SendMessage getWarningReplyMessage(long chatId, String replyMessage) {
-        return new SendMessage(chatId, getEmojiReplyText(replyMessage, Emojis.NOTIFICATION_MARK_FAILED));
-    }
-
-*/
+   
 
     public AnswerCallbackQuery getPopUpAnswer(String callbackId, String text) {
         AnswerCallbackQuery answerCallbackQuery = new AnswerCallbackQuery();

@@ -23,7 +23,6 @@ public interface OperationRepository extends JpaRepository<Operation,Long> {
     Operation findById (Integer id);
     @Query(value = "SELECT DISTINCT c.name, sum(amount) FROM operation LEFT JOIN category c on c.id = operation.category_id LEFT JOIN users u on u.id = operation.user_id LEFT JOIN type_operation t on t.id = operation.type_operation_id WHERE t.name='EXPENSE' AND date_part('month',create_at) =?1 GROUP BY c.name",nativeQuery = true)
     List<Operation> getSumOperationByCategoryPerMonth (int userId);
-    /*@Query("SELECT sum(o.amount) FROM Operation o WHERE o.typeOperation= :typeOperation AND o.user= :user")*/
     @Query(value = "SELECT sum(operation.amount) FROM operation WHERE operation.type_operation_id = ?1 AND operation.user_id= ?2 AND date_part('month',operation.create_at) = ?3 AND date_part('year',operation.create_at) = ?4",nativeQuery = true)
     double sumAmountOperationsForOperationType (TypeOperation typeOperation,User user,int month,int year);
     List<Operation> findOperationsByCategoryAndUser (Category category,User user);

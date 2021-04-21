@@ -18,7 +18,7 @@ public class BalanceCommandHandler implements InputMessageHandler{
     private UserService userService;
     private BalanceService balanceService;
     private ReplyMessagesService replyMessagesService;
-    private static final double COURSE_DOLLAR = 27.76;
+    private static final double COURSE_DOLLAR = 27.99;
 
     public BalanceCommandHandler(UserService userService, BalanceService balanceService,ReplyMessagesService replyMessagesService) {
         this.userService = userService;

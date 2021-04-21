@@ -81,19 +81,6 @@ public class TelegramFacade {
         User user;
         SendMessage reply = null;
         String textMessage = message.getText();
-        /*if (isOperationAmount(textMessage)) {
-            botState = BotState.CHOOSE_OPERATION_TYPE;
-            //reply = getChooseOperationReplyInlineKeyboard(message);
-            *//*Double amountOperation = Double.parseDouble(textMessage);
-            User currentUser = userService.findUserByChat_id(chat_id);
-            operation = new Operation();
-            operation.setAmount(amountOperation);
-            log.info("Set amount operation to {0}", operation.getAmount());
-
-            log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), message.getChatId(), message.getText());
-            return getChooseOperationReplyInlineKeyboard(update);*//*
-            // return new SendMessage(chat_id,"Два повідомлення в одному і тому ж блоці перевірки update");
-        } else {*/
             switch (textMessage) {
                 case "/start":
                     botState = BotState.START_STATE;

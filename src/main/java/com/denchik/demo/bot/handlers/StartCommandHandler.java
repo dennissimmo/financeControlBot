@@ -28,31 +28,6 @@ public class StartCommandHandler implements InputMessageHandler{
         this.replyMessagesService = replyMessagesService;
     }
 
-    /*@Override
-    public SendMessage handle(Message message) {
-        SendMessage reply = null;
-        Long chat_id = message.getChatId();
-        org.telegram.telegrambots.meta.api.objects.User telegram = message.getFrom();
-        User currentUser = userService.findUserByChat_id(message.getChatId());
-        if (currentUser != null) {
-            Balance userBalance = currentUser.getBalance();
-            if (userBalance != null) {
-                currentUser.setState_id(BotState.WAIT_OPERATION);
-                reply = replyMessagesService.getReplyMessage(message.getChatId(),"reply.command.start.authorized.instruction",currentUser.getFirst_name());
-                userService.saveUser(currentUser);
-            } else {
-                reply = replyMessagesService.getReplyMessage(message.getChatId(),"reply.command.start.authorized.setBalance",currentUser.getFirst_name());
-                currentUser.setState_id(BotState.NONE);
-                userService.saveUser(currentUser);
-            }
-        } else {
-            currentUser = new User(chat_id,telegram.getFirstName(),telegram.getLastName(),telegram.getUserName(),telegram.getLanguageCode(),0);
-            userService.saveUser(currentUser);
-            log.info("Add new user: username : {} chat_id : {} firstname : {}",telegram.getUserName(),message.getChatId(),telegram.getFirstName());
-            reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.start.setBalance", Emojis.MONEYBAG);
-        }
-        return reply;
-    }*/
     @Override
     public SendMessage handle(Message message) {
         SendMessage reply = null;
@@ -85,15 +60,13 @@ public class StartCommandHandler implements InputMessageHandler{
         InlineKeyboardMarkup chooseLanguageMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton english = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.english",Emojis.ENGLISH)).setCallbackData("language|en-UK");
         InlineKeyboardButton ukrainian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.ukrainian",Emojis.UKRAINE)).setCallbackData("language|ua-UA");
-        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-Ru");
-        //InlineKeyboardButton cancel = new InlineKeyboardButton(replyMessagesService.getReplyText("reply.operation.cancel",Emojis.CANCEL)).setCallbackData(String.format("%s|%d","Cancel",idOperation));
+        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-RU");
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         List<InlineKeyboardButton> row3 = new ArrayList<>();
         row1.add(english);
         row2.add(ukrainian);
         row3.add(russian);
-        //row2.add(cancel);
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         buttons.add(row1);
         buttons.add(row2);

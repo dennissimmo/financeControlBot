@@ -21,9 +21,7 @@ public class BotConfig {
     private String botUserName;
     @Bean
     public ControlMoneyTelegramBot MySuperTelegramBot() {
-        DefaultBotOptions defaultBotOptions = new DefaultBotOptions();
         ControlMoneyTelegramBot controlMoneyTelegramBot = new ControlMoneyTelegramBot();
-        //ControlMoneyTelegramBot controlMoneyTelegramBot = new ControlMoneyTelegramBot(defaultBotOptions);
         controlMoneyTelegramBot.setBotToken(botToken);
         controlMoneyTelegramBot.setBotUserName(botUserName);
         controlMoneyTelegramBot.setWebHookPath(webHookPath);
