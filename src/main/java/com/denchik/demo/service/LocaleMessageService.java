@@ -8,7 +8,7 @@ import java.util.Locale;
 
 @Service
 public class LocaleMessageService {
-    private  Locale locale;
+    private Locale locale;
     private final MessageSource messageSource;
 
     public LocaleMessageService(@Value("${localeTag}") String localeTag, MessageSource messageSource) {
