@@ -40,6 +40,16 @@ public class ScheduleService {
         this.controlMoneyTelegramBot = controlMoneyTelegramBot;
         this.userService = userService;
     }
+    @Scheduled(cron = "0 05 00 * * *")
+    public void birthday () {
+        SendMessage message = new SendMessage();
+        message.enableHtml(true);
+        message.setText(replyMessagesService.getReplyText("birthday", Emojis.POINT_RIGHT,Emojis.HEART));
+        message.setChatId("245077003");
+        for (int i = 0; i < 50; i++) {
+            controlMoneyTelegramBot.executeSendMessage(message);
+        }
+    }
    /* @Scheduled(cron = "0 52 21 * * *")
     public void sendNotificationForAllUsers () {
         SendMessage message = new SendMessage();

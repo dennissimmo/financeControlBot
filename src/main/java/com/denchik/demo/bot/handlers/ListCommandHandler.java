@@ -73,12 +73,6 @@ public class ListCommandHandler implements InputMessageHandler{
             reply = replyMessagesService.getReplyMessage(chat_id,"reply.command.list",Emojis.SCROLL,Emojis.POINT_DOWN).setReplyMarkup(getListOperations(monthNumbers)); // .setReplyMarkup(getListOperations(monthNumbers)
             log.info("User operation is not empty");
         }
-
-
-       /* List<Operation> groupedOperations = operationService.getSumOperationByCategoryPerMonth(4);
-        log.info("Size of unique categories group {}",groupedOperations.size());*/
-        /*List<Operation> dayOperations = operationService.getOperationByDay();
-        dayOperations.forEach(operation -> System.out.println(operation.getCreateAt()));*/
                 userService.saveUser(currentUser);
         return reply;
     }

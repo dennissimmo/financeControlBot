@@ -34,11 +34,9 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
     private String botToken;
     @Value("${telegrambot.userName}")
     private String botUserName;
-    /*public ControlMoneyTelegramBot(DefaultBotOptions botOptions) {
-        super(botOptions);
-    }*/
-    public ControlMoneyTelegramBot () {
 
+    public ControlMoneyTelegramBot () {
+        System.out.println("Create instance control money telegram bot");
     }
     @Override
     public String getBotPath() {
@@ -54,7 +52,6 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
     }
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived (Update update) {
-
         if (update.getMessage() != null && update.getMessage().hasText()) {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = update.getMessage().getText();
