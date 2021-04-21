@@ -100,7 +100,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 operation.setTypeOperation(typeOperationService.getTypeByName(INCOME));
                 operationService.saveOperation(operation);
                 List<Operation> userOperations = operationService.getUserOperations(currentUser);
-                displayOperationList(userOperations);
+                //displayOperationList(userOperations);
                 //replyMessagesService.getReplyText("reply.category.chooseCategory.income",Emojis.EURO,operation.getAmount())
               controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseCategory.income", Emojis.WRITINGHANDLE,operation.getAmount()),keyboardMarkup);
             } else if (callBackData.equals(EXPENSE)) {
@@ -141,7 +141,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 } else {
                     dateOperationFormatted = String.format("%s year",FULL_MONTH_EN.format(operation.getCreateAt()));
                 }
-                System.out.println("Type category : " + category.getTypeCategory().getName_type() + replyMessagesService.getReplyText("reply.typeOperation.incomes").trim());
+                //System.out.println("Type category : " + category.getTypeCategory().getName_type() + replyMessagesService.getReplyText("reply.typeOperation.incomes").trim());
                 if (operation.getTypeOperation().getName().equals("EXPENSE")) {
                     controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 } else {

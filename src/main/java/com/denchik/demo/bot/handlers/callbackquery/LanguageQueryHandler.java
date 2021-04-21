@@ -45,6 +45,7 @@ public class LanguageQueryHandler implements CallbackQueryHandler{
             currentUser.setLanguage_code(localeTag);
             replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());
             log.info("Set language {} For User: {}",localeTag,currentUser.toString());
+            log.info("LocaleMessage {} ", currentUser.getLanguage_code());
             controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.language.current"));
             userService.saveUser(currentUser);
         }

@@ -79,7 +79,7 @@ public class ReportCommandHandler implements InputMessageHandler{
         response.append("\n");
         response.append("\n");
         List<Operation> incomeOperations = userOperations.stream().filter(operation -> operation.getTypeOperation().getName().equals(incomeType.getName())).collect(Collectors.toList());
-        //List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(incomeType,currentUser);
+
         if (incomeOperations.size() > 0) {
             response.append("<b>" + replyMessagesService.getReplyText("report.perMonth.income", Emojis.INCOME)).append(String.format(": %.2f \n",operationService.sumAmountOperationsByTypeOperation(incomeType,currentUser,indexCurrentMonth,currentYear)) + "</b>");
         } else {
@@ -114,7 +114,6 @@ public class ReportCommandHandler implements InputMessageHandler{
                 response.append(String.format("\n   <code>∟ %s %.2f => %s </code>\n",formatData.format(operation.getCreateAt()),operation.getAmount(),operation.getCategory().getName()));
             }
         }
-        //lastOperations.forEach(operation -> response.append(String.format("\n   <code>∟ %s %.2f => %s </code>\n",formatData.format(operation.getCreateAt()),operation.getAmount(),operation.getCategory().getName())));
         StringBuilder footer = new StringBuilder();
         footer.append("\n")
                 .append("<code>******************************************")

@@ -30,6 +30,8 @@ public class Operation extends AbstractBaseEntity {
     private Date createAt;
     @Column(name = "raw_text",nullable = false)
     private String raw_text;
+    @Column(name = "current_balance")
+    private double currentBalance;
     @ManyToOne(fetch = FetchType.LAZY,cascade = {CascadeType.MERGE,CascadeType.PERSIST})
     @JoinColumn(name = "user_id")
     private User user;
@@ -133,5 +135,13 @@ public class Operation extends AbstractBaseEntity {
             return String.format("+ %.2f",operation.getAmount());
         }
         return "";
+    }
+
+    public double getCurrentBalance() {
+        return currentBalance;
+    }
+
+    public void setCurrentBalance(double currentBalance) {
+        this.currentBalance = currentBalance;
     }
 }
