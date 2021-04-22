@@ -151,11 +151,14 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 Balance userBalance = currentUser.getBalance();
                 Operation currentOperation = operationService.findOperationById(idHandledOperation);
                 double amountOperation = currentOperation.getAmount();
-                if (currentOperation.getTypeOperation().getName().equals("EXPENSE")) {
+                String currentOperationType = currentOperation.getTypeOperation().getName();
+                if (currentOperationType.equals("EXPENSE")) {
                     userBalance.downBalance(amountOperation);
-                } else {
+                } else if (currentOperationType.equals("INCOME")){
                     userBalance.upBalance(amountOperation);
                 }
+                operation.setCurrentBalance(userBalance.getAmount());
+                operationService.saveOperation(operation);
                 balanceService.saveBalance(userBalance);
             //return replyMessagesService.getReplyMessage(chat_id,"reply.query.incorrect");
         }
