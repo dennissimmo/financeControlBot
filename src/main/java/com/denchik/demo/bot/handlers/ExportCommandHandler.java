@@ -50,7 +50,7 @@ public class ExportCommandHandler implements InputMessageHandler{
 
     @Override
     public SendMessage handle(Message message) {
-        User currentUser = userService.findUserByChat_id(message.getChatId());
+        User currentUser = userService.findUserByChatId(message.getChatId());
         List<Operation> userOperations = operationService.findOperationsByUser(currentUser);
         List<Category> distinctOperationCategory = userOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
         if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {

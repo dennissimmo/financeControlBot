@@ -110,7 +110,7 @@ public class TelegramFacade {
                     botState = BotState.HELP;
                     break;
                 default:
-                    user = userService.findUserByChat_id(message.getChatId());
+                    user = userService.findUserByChatId(message.getChatId());
                     if (user == null) {
                         botState = BotState.NONE;
                     } else {
@@ -123,7 +123,7 @@ public class TelegramFacade {
                     }
             }
         try {
-            user = userService.findUserByChat_id(message.getChatId());
+            user = userService.findUserByChatId(message.getChatId());
             if (user != null) {
                 user.setState_id(botState);
                 log.info("User before return reply message : {} ", user.toString());

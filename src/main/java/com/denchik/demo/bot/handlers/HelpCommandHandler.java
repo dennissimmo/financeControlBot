@@ -23,7 +23,7 @@ public class HelpCommandHandler implements InputMessageHandler{
     public SendMessage handle(Message message) {
         System.out.println("Unlucky");
         Long chat_id = message.getChatId();
-        User user = userService.findUserByChat_id(message.getChatId());
+        User user = userService.findUserByChatId(message.getChatId());
         if (user != null) {
             replyMessagesService.setLocaleMessageService(user.getLanguage_code());
         }

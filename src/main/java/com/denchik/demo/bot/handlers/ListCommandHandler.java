@@ -40,7 +40,7 @@ public class ListCommandHandler implements InputMessageHandler{
     }
     @Override
     public SendMessage handle(Message message) {
-        User user = userService.findUserByChat_id(message.getChatId());
+        User user = userService.findUserByChatId(message.getChatId());
         if (user.getState_id().equals(BotState.LIST_OPERATION.ordinal()))
         {
             user.setState_id(BotState.WAIT_OPERATION); // Choose operation for delete
@@ -58,7 +58,7 @@ public class ListCommandHandler implements InputMessageHandler{
     private SendMessage processUserInput (Message message) {
         String userInput = message.getText();
         long chat_id = message.getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chat_id);
         List<Operation> userOperations = operationService.findOperationsByUser(currentUser);
         TypeOperation income = typeOperationService.getTypeByName("Income");
         List<Operation> incomeOperations = operationService.findAllOperationByTypeCategory(income,currentUser);

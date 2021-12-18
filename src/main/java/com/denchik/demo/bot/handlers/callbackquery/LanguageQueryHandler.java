@@ -40,7 +40,7 @@ public class LanguageQueryHandler implements CallbackQueryHandler{
         String callBackData = callbackQuery.getData();
         String localeTag = parseQueryDataService.getLocaleTagFromChooseLanguageQuery(callbackQuery);
         long chat_id = callbackQuery.getMessage().getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chat_id);
         if (callBackData.contains(LANGUAGE)) {
             currentUser.setLanguage_code(localeTag);
             replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());

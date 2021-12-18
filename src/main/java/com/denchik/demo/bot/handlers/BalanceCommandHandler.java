@@ -33,7 +33,7 @@ public class BalanceCommandHandler implements InputMessageHandler{
     }
     private SendMessage processUserInput (Message message) {
         long chat_id = message.getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chat_id);
         BotState botState = BotState.getBotStateById(currentUser.getState_id());
         SendMessage reply = null;
         if (botState.equals(BotState.GET_BALANCE)) {

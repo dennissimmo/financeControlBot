@@ -33,7 +33,7 @@ public class StartCommandHandler implements InputMessageHandler{
         SendMessage reply = null;
         long chat_id = message.getChatId();
         org.telegram.telegrambots.meta.api.objects.User telegram = message.getFrom();
-        User user = userService.findUserByChat_id(chat_id);
+        User user = userService.findUserByChatId(chat_id);
         if (user == null) {
             user = new User(chat_id, telegram.getFirstName(), telegram.getLastName(), telegram.getUserName(), "ua-UA",0);
             user.setState_id(BotState.NONE);

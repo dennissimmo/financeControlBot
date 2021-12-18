@@ -27,7 +27,7 @@ public class LanguageCommandHandler implements InputMessageHandler{
     }
     private SendMessage processUserInput (Message message) {
         long chat_id = message.getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chat_id);
         String inputUser = message.getText();
         BotState botState = BotState.getBotStateById(currentUser.getState_id());
         SendMessage reply = null;
@@ -40,7 +40,7 @@ public class LanguageCommandHandler implements InputMessageHandler{
             currentUser.setLanguage_code(inputUser);
             currentUser.setState_id(BotState.WAIT_OPERATION);
             userService.saveUser(currentUser);
-            User updateLocale = userService.findUserByChat_id(chat_id);
+            User updateLocale = userService.findUserByChatId(chat_id);
             reply = new SendMessage().setChatId(chat_id).setText(String.format(" Choosen locale: %s", currentUser.getLanguage_code()));
         }
         return reply;

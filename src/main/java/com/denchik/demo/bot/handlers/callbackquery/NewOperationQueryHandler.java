@@ -90,7 +90,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
         String callBackData = parseQueryDataService.getTypeOperationFromChooseTypeOperationQuery(callbackQuery);
         long chat_id = callbackQuery.getMessage().getChatId();
 
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chat_id);
         String localeTag = currentUser.getLanguage_code();
         replyMessagesService.setLocaleMessageService(localeTag);
         Operation operation = operationService.findOperationById(idHandledOperation);

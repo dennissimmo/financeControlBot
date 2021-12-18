@@ -36,7 +36,7 @@ public class AddOperationHandler implements InputMessageHandler {
 
     @Override
     public SendMessage handle(Message message) {
-        User user = userService.findUserByChat_id(message.getChatId());
+        User user = userService.findUserByChatId(message.getChatId());
         replyMessagesService.setLocaleMessageService(user.getLanguage_code());
         if (user.getState_id().equals(BotState.WAIT_OPERATION.ordinal()))
         {
@@ -50,7 +50,7 @@ public class AddOperationHandler implements InputMessageHandler {
     private SendMessage processUserInput (Message message) {
         String userInput = message.getText();
         long chat_id = message.getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chat_id);
         BotState botState = BotState.getBotStateById(currentUser.getState_id());
         SendMessage reply = null;
         if (botState.equals(BotState.SET_AMOUNT_OPERATION)) {
