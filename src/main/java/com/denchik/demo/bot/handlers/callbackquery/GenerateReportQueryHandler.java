@@ -56,8 +56,8 @@ public class GenerateReportQueryHandler implements CallbackQueryHandler {
         String nextOrPrevious = parseQueryDataService.getTypeOperationFromChooseTypeOperationQuery(callbackQuery);
         int indexCurrentMonth = Integer.parseInt(parseQueryDataService.getMonthNumberQuery(callbackQuery));
         int currentYear = Integer.parseInt(parseQueryDataService.getYearNumberQuery(callbackQuery));
-        Long chat_id = callbackQuery.getMessage().getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        Long chatId = callbackQuery.getMessage().getChatId();
+        User currentUser = userService.findUserByChatId(chatId);
         String localeTag = currentUser.getLanguage_code();
         replyMessagesService.setLocaleMessageService(localeTag);
         StringBuilder response = new StringBuilder();
@@ -122,7 +122,7 @@ public class GenerateReportQueryHandler implements CallbackQueryHandler {
         currentUser.setState_id(BotState.WAIT_OPERATION);
         userService.saveUser(currentUser);
         log.info("Finish Handle");
-        controlMoneyTelegramBot.editMessage(chat_id,messageId,response.toString(),changeMonthKeyboard(indexCurrentMonth,currentYear, nextOrPrevious,localeTag,getDateForHeader));
+        controlMoneyTelegramBot.editMessage(chatId,messageId,response.toString(),changeMonthKeyboard(indexCurrentMonth,currentYear, nextOrPrevious,localeTag,getDateForHeader));
         return new SendMessage();
     }
     public String getNameMonthByLocale (String localeTag,Date date,Month month) {

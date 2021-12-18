@@ -1,12 +1,7 @@
 package com.denchik.demo.bot;
 
-import com.denchik.demo.model.Category;
-import com.denchik.demo.service.CategoryService;
 import org.springframework.beans.factory.annotation.Value;
-import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.PropertySource;
-import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
 import org.telegram.telegrambots.bots.TelegramWebhookBot;
 import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
@@ -24,7 +19,7 @@ import java.io.ByteArrayInputStream;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
+
 
 @PropertySource("classpath:application.properties")
 public class ControlMoneyTelegramBot extends TelegramWebhookBot {
@@ -59,7 +54,10 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             switch (textMessage) {
                 case "/start" :
                     try {
-                        execute(new SendMessage(chat_id.toString(),"Hello i can help control your money especially income and expenses"));
+                        execute(new SendMessage(
+                                chat_id.toString(),
+                                "Hello i can help control your money especially income and expenses"
+                        ));
                         System.out.println("I am get a \"/start\" command");
                     } catch (TelegramApiException e) {
                         e.printStackTrace();
@@ -95,6 +93,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
                     break;
             }
         }
+
         return null;
     }
     public void editMessage (Long chat_id, Integer messageID, String textMessage) {
@@ -184,9 +183,11 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             e.printStackTrace();
         }
     }
+
     public void setWebHookPath(String webHookPath) {
         this.webHookPath = webHookPath;
     }
+
     public void setBotToken(String botToken) {
         this.botToken = botToken;
     }
