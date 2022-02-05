@@ -61,10 +61,10 @@ public class ExportCommandHandler implements InputMessageHandler{
             LocalDateTime dateObj = LocalDateTime.now();
             String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
             String fileName = "ControlMoneyBot_" + currentDataTime;
-            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
             currentUser.setState_id(BotState.WAIT_OPERATION);
-            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
             userService.saveUser(currentUser);
+            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
+            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
         }
         return replyMessagesService.getReplyMessage(message.getChatId(),"reply.excel.success", Emojis.POINT_UP);
     }
