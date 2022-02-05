@@ -18,16 +18,16 @@ public class UserService {
         return userRepository.findAll();
     }
     @Transactional(readOnly = true)
-    public User findUserByChat_id (Long chat_id) {
-        return userRepository.findByChatId(chat_id);
+    public User findUserByChatId (Long chatId) {
+        return userRepository.findByChatId(chatId);
     }
     @Transactional
     public User addUser (User user) {
         return userRepository.save(user);
     }
     @Transactional
-    public void deleteUserByChat_id (Long chat_id) {
-        userRepository.deleteByChatId(chat_id);
+    public void deleteUserByChatId (Long chatId) {
+        userRepository.deleteByChatId(chatId);
     }
     @Transactional
     public void saveUser (User user){

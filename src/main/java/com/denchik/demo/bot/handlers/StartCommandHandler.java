@@ -33,7 +33,7 @@ public class StartCommandHandler implements InputMessageHandler{
         SendMessage reply = null;
         long chat_id = message.getChatId();
         org.telegram.telegrambots.meta.api.objects.User telegram = message.getFrom();
-        User user = userService.findUserByChat_id(chat_id);
+        User user = userService.findUserByChatId(chat_id);
         if (user == null) {
             user = new User(chat_id, telegram.getFirstName(), telegram.getLastName(), telegram.getUserName(), "ua-UA",0);
             user.setState_id(BotState.NONE);
@@ -60,13 +60,13 @@ public class StartCommandHandler implements InputMessageHandler{
         InlineKeyboardMarkup chooseLanguageMarkup = new InlineKeyboardMarkup();
         InlineKeyboardButton english = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.english",Emojis.ENGLISH)).setCallbackData("language|en-UK");
         InlineKeyboardButton ukrainian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.ukrainian",Emojis.UKRAINE)).setCallbackData("language|ua-UA");
-        InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-RU");
+        //InlineKeyboardButton russian = new InlineKeyboardButton(replyMessagesService.getReplyText("button.language.russian",Emojis.RUSSIA)).setCallbackData("language|ru-RU");
         List<InlineKeyboardButton> row1 = new ArrayList<>();
         List<InlineKeyboardButton> row2 = new ArrayList<>();
         List<InlineKeyboardButton> row3 = new ArrayList<>();
-        row1.add(english);
-        row2.add(ukrainian);
-        row3.add(russian);
+        row1.add(ukrainian);
+        row2.add(english);
+        //row3.add(russian);
         List<List<InlineKeyboardButton>> buttons = new ArrayList<>();
         buttons.add(row1);
         buttons.add(row2);

@@ -2,11 +2,9 @@ package com.denchik.demo.bot.handlers;
 
 import com.denchik.demo.bot.BotState;
 import com.denchik.demo.model.User;
-import com.denchik.demo.service.OperationService;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;
-import lombok.extern.java.Log;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
@@ -16,6 +14,7 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKe
 
 import java.util.ArrayList;
 import java.util.List;
+
 @Component
 @Log4j2
 public class DeleteCommandHandler implements InputMessageHandler{
@@ -29,7 +28,7 @@ public class DeleteCommandHandler implements InputMessageHandler{
 
     @Override
     public SendMessage handle(Message message) {
-        User user = userService.findUserByChat_id(message.getChatId());
+        User user = userService.findUserByChatId(message.getChatId());
         replyMessagesService.setLocaleMessageService(user.getLanguage_code());
         if (user != null) {
             return getConfirmationDeleteKeyboard(message);
@@ -41,8 +40,8 @@ public class DeleteCommandHandler implements InputMessageHandler{
     public BotState getHandlerName() {
         return BotState.DELETE_CONNECTION;
     }
-    public SendMessage getConfirmationDeleteKeyboard (Message message) {
 
+    public SendMessage getConfirmationDeleteKeyboard (Message message) {
         SendMessage replyMessage = new SendMessage().setText(replyMessagesService.getReplyText("reply.useRelation.confirmation.delete", Emojis.WARNING));
         replyMessage.setChatId(message.getChatId());
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();

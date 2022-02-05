@@ -40,8 +40,8 @@ public class DeleteUserQueryHandler implements CallbackQueryHandler {
         Integer messageId = callbackQuery.getMessage().getMessageId();
         Integer callBackMessageId = callbackQuery.getMessage().getMessageId();
         String callBackText = callbackQuery.getData();
-        long chat_id = callbackQuery.getMessage().getChatId();
-        User currentUser = userService.findUserByChat_id(chat_id);
+        long chatId = callbackQuery.getMessage().getChatId();
+        User currentUser = userService.findUserByChatId(chatId);
 
         if (currentUser != null) {
             String localeUser = currentUser.getLanguage_code();
@@ -56,14 +56,14 @@ public class DeleteUserQueryHandler implements CallbackQueryHandler {
                 balanceService.deleteBalanceById(currentUser.getBalance().getId());
             }
             log.info("Delete user : {}", currentUser.toString());
-            userService.deleteUserByChat_id(chat_id);
-            controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.delete.user"));
+            userService.deleteUserByChatId(chatId);
+            controlMoneyTelegramBot.editMessage(chatId,messageId,replyMessagesService.getReplyText("reply.delete.user"));
         }
         if (callBackText.equals(NO)) {
             // TODO: Add message if user not confirm deleting
             currentUser.setState_id(BotState.WAIT_OPERATION);
             userService.saveUser(currentUser);
-            controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.delete.cancel",Emojis.CHECK));
+            controlMoneyTelegramBot.editMessage(chatId,messageId,replyMessagesService.getReplyText("reply.delete.cancel",Emojis.CHECK));
         }
         return new SendMessage();
     }

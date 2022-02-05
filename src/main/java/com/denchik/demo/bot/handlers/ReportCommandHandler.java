@@ -50,7 +50,7 @@ public class ReportCommandHandler implements InputMessageHandler{
         log.info("Start Handle");
         SendMessage reply = new SendMessage().enableHtml(true);
         Long chat_id = message.getChatId();
-        User currentUser = userService.findUserByChat_id(message.getChatId());
+        User currentUser = userService.findUserByChatId(message.getChatId());
         String localeTag = currentUser.getLanguage_code();
         replyMessagesService.setLocaleMessageService(localeTag);
         StringBuilder response = new StringBuilder();

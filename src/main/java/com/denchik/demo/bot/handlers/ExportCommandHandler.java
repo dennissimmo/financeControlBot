@@ -50,18 +50,21 @@ public class ExportCommandHandler implements InputMessageHandler{
 
     @Override
     public SendMessage handle(Message message) {
-        User currentUser = userService.findUserByChat_id(message.getChatId());
+        User currentUser = userService.findUserByChatId(message.getChatId());
         List<Operation> userOperations = operationService.findOperationsByUser(currentUser);
-        List<Category> distinctOperationCategory = userOperations.stream().map(operation -> operation.getCategory()).distinct().collect(Collectors.toList());
+        List<Category> distinctOperationCategory = userOperations.stream()
+                .map(operation -> operation.getCategory())
+                .distinct()
+                .collect(Collectors.toList());
         if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {
-            OperationExcelExport export = new OperationExcelExport(userOperations,distinctOperationCategory,operationService,currentUser);
+            OperationExcelExport export = new OperationExcelExport(userOperations, distinctOperationCategory, operationService, currentUser);
             LocalDateTime dateObj = LocalDateTime.now();
             String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
             String fileName = "ControlMoneyBot_" + currentDataTime;
-            controlMoneyTelegramBot.createDocument(message.getChatId(),fileName,export.export());
             currentUser.setState_id(BotState.WAIT_OPERATION);
-            log.info("User : {} Exported report: {}",currentUser.toString(),fileName);
             userService.saveUser(currentUser);
+            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
+            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
         }
         return replyMessagesService.getReplyMessage(message.getChatId(),"reply.excel.success", Emojis.POINT_UP);
     }

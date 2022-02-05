@@ -1,6 +1,5 @@
 package com.denchik.demo.service;
 
-import org.checkerframework.checker.units.qual.C;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 

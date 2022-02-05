@@ -49,6 +49,10 @@ public class OperationService {
         return  operationRepository.findOperationByTypeOperationAndUserOrderByAmount(typeOperation,user);
     }
     @Transactional(readOnly = true)
+    public List<Operation> getUserOperationsOrdered (User user) {
+        return operationRepository.findOperationsByUserAndCategoryNotNullOrderByCreateAt(user);
+    }
+    @Transactional(readOnly = true)
     public List<Operation> findOperationByCategoryAndUser (Category category,User user) {
         return operationRepository.findOperationsByCategoryAndUser(category,user);
     }
@@ -60,6 +64,7 @@ public class OperationService {
     public double sumAmountOperationsByTypeOperation (TypeOperation typeOperation,User user,int month, int year) {
         return  operationRepository.sumAmountOperationsForOperationType(typeOperation,user,month,year);
     }
+
     @Transactional(readOnly = true)
     public double sumAmountOperationsByCategory (Category category,User user) {
         return  operationRepository.sumAmountOperationsForCategory(category,user);

@@ -6,7 +6,6 @@ import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 
 import java.util.List;
-import java.util.Optional;
 
 @Component
 public class CallbackQueryFacade {
@@ -22,6 +21,7 @@ public class CallbackQueryFacade {
     public SendMessage processCallbackQuery(CallbackQuery usersQuery) {
         return getHandlerByCallBackQuery(usersQuery.getData()).handleCallbackQuery(usersQuery);
     }
+
     private CallbackQueryHandler getHandlerByCallBackQuery(String query) {
         return callbackQueryHandlers.stream()
                 .filter(h -> h.getHandlerQueryType().stream()

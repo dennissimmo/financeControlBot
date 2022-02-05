@@ -2,7 +2,6 @@ package com.denchik.demo.bot.handlers.callbackquery;
 
 import com.denchik.demo.bot.ControlMoneyTelegramBot;
 import com.denchik.demo.model.Balance;
-import com.denchik.demo.model.Category;
 import com.denchik.demo.model.Operation;
 import com.denchik.demo.model.User;
 import com.denchik.demo.service.*;
@@ -11,7 +10,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 
 import java.util.List;
 
@@ -43,9 +41,9 @@ public class DeleteOperationQueryHandler implements CallbackQueryHandler{
         String operationDescription = parseQueryDataService.getOperationDescription(callbackQuery);
         String callBackText = callbackQuery.getData();
         String callBackData = parseQueryDataService.getTypeOperationFromChooseTypeOperationQuery(callbackQuery);
-        long chat_id = callbackQuery.getMessage().getChatId();
+        long chatId = callbackQuery.getMessage().getChatId();
 
-        User currentUser = userService.findUserByChat_id(chat_id);
+        User currentUser = userService.findUserByChatId(chatId);
         replyMessagesService.setLocaleMessageService(currentUser.getLanguage_code());
         Operation operation = operationService.findOperationById(idHandledOperation);
         Balance userBalance = currentUser.getBalance();
@@ -57,7 +55,7 @@ public class DeleteOperationQueryHandler implements CallbackQueryHandler{
             }
             userService.saveUser(currentUser);
             balanceService.saveBalance(userBalance);
-            controlMoneyTelegramBot.editMessage(chat_id,messageId,replyMessagesService.getReplyText("reply.operation.delete",String.format("<b>%s %s</b>",operationDescription,operation.getCategory().getName()), Emojis.WARNING));
+            controlMoneyTelegramBot.editMessage(chatId,messageId,replyMessagesService.getReplyText("reply.operation.delete",String.format("<b>%s %s</b>",operationDescription,operation.getCategory().getName()), Emojis.WARNING));
             operationService.deleteOperation(operation);
         }
        return new SendMessage();
