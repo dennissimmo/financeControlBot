@@ -41,7 +41,7 @@ public class TelegramFacade {
      * @param update
      * @return
      */
-    public SendMessage handleUpdate (Update update) {
+    public SendMessage handleUpdate(Update update) {
         SendMessage replyMessage = null;
         Message message = update.getMessage();
         if (message != null && message.hasText()) {
@@ -70,13 +70,13 @@ public class TelegramFacade {
 
     /**
      * Метод обробляє текст повідомлення, визначає його приналежність до конкретної команди, визначає поточний стан бота
-     * у конкретного користувача,перемикає поточний стан роботи бота, повертає відповідь для користувача в залежності
+     * у конкретного користувача, перемикає поточний стан роботи бота, повертає відповідь для користувача в залежності
      * від поточного стану бота, та передає ці дані методу processInputMessage () класу BotStateContext
      *
      * @param message
      * @return
      */
-    public SendMessage handleInputMessageText (Message message) {
+    public SendMessage handleInputMessageText(Message message) {
         BotState botState;
         User user;
         SendMessage reply = null;
@@ -129,7 +129,7 @@ public class TelegramFacade {
                 log.info("User before return reply message : {} ", user.toString());
                 userService.saveUser(user);
             }
-            reply = botStateContext.processInputMessage(botState,message);
+            reply = botStateContext.processInputMessage(botState, message);
         } catch (Exception e) {
             reply = new SendMessage(message.getChatId(),"Can`t handle update on state : " + botState);
             log.info("Can't handle state : {}",botState);
@@ -137,11 +137,11 @@ public class TelegramFacade {
         }
         return reply;
     }
-        private boolean isOperationAmount (String messageText) {
-            String regex = "\\d+";
-            Pattern digits = Pattern.compile(regex);
-            boolean isOperationText = digits.matcher(messageText).matches();
-            return isOperationText;
-        }
 
+    private boolean isOperationAmount(String messageText) {
+        String regex = "\\d+";
+        Pattern digits = Pattern.compile(regex);
+        boolean isOperationText = digits.matcher(messageText).matches();
+        return isOperationText;
+    }
 }

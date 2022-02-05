@@ -109,7 +109,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             e.printStackTrace();
         }
     }
-    public void  createDocument(Long chatId, String fileName, ByteArrayInputStream byteArray ) {
+    public void createDocument(Long chatId, String fileName, ByteArrayInputStream byteArray ) {
         InputStream stream = byteArray;
         SendDocument document = new SendDocument();
         document.setChatId(chatId.toString());

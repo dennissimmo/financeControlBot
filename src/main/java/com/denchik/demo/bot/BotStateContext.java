@@ -10,12 +10,11 @@ import java.util.List;
 import java.util.Map;
 
 @Component
-
 public class BotStateContext {
     private Map<BotState, InputMessageHandler> messageHandlers = new HashMap<>();
 
     public BotStateContext(List<InputMessageHandler> messageHandlers) {
-        messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(),handler));
+        messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(), handler));
     }
     public SendMessage processInputMessage(BotState currentState, Message message) {
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
@@ -34,7 +33,7 @@ public class BotStateContext {
         }
         return messageHandlers.get(currentState);
     }
-    private boolean isOperationAdd (BotState state) {
+    private boolean isOperationAdd(BotState state) {
         switch (state) {
             case WAIT_OPERATION:
             case SET_AMOUNT_OPERATION:
@@ -43,7 +42,7 @@ public class BotStateContext {
                 return false;
         }
     }
-    private boolean isBalanceState (BotState state) {
+    private boolean isBalanceState(BotState state) {
         switch (state) {
             case SET_BALANCE:
             case ASK_BALANCE:
@@ -53,7 +52,7 @@ public class BotStateContext {
                 return false;
         }
     }
-    private boolean isStartState (BotState state) {
+    private boolean isStartState(BotState state) {
         switch (state) {
             case START_STATE:
             case LANGUAGE_CHOOSE:
