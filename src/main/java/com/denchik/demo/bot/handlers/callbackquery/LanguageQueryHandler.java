@@ -4,7 +4,7 @@ import com.denchik.demo.bot.BotState;
 import com.denchik.demo.bot.ControlMoneyTelegramBot;
 import com.denchik.demo.model.Balance;
 import com.denchik.demo.model.User;
-import com.denchik.demo.service.ParseQueryDataService;
+import com.denchik.demo.service.Query.ParseQueryDataService;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;

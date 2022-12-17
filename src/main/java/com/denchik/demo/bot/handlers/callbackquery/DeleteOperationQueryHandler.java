@@ -5,6 +5,7 @@ import com.denchik.demo.model.Balance;
 import com.denchik.demo.model.Operation;
 import com.denchik.demo.model.User;
 import com.denchik.demo.service.*;
+import com.denchik.demo.service.Query.ParseQueryDataService;
 import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
