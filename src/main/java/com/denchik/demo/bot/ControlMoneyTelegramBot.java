@@ -8,6 +8,7 @@ import org.telegram.telegrambots.meta.api.methods.send.SendDocument;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.InputFile;
+import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.ReplyKeyboardMarkup;
@@ -48,8 +49,9 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
     @Override
     public BotApiMethod<?> onWebhookUpdateReceived (Update update) {
         if (update.getMessage() != null && update.getMessage().hasText()) {
-            Long chat_id = update.getMessage().getChatId();
-            String textMessage = update.getMessage().getText();
+            Message message = update.getMessage();
+            Long chat_id = message.getChatId();
+            String textMessage = message.getText();
 
             switch (textMessage) {
                 case "/start" :
@@ -96,8 +98,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
 
         return null;
     }
-    public void editMessage (Long chat_id, Integer messageID, String textMessage) {
-        BotApiMethod editedReply = null;
+    public void editMessage(Long chat_id, Integer messageID, String textMessage) {
         EditMessageText et = new EditMessageText()
                 .setChatId(chat_id)
                 .setMessageId(messageID)
@@ -121,8 +122,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
         }
     }
 
-    public void editMessage (Long chat_id, Integer messageID, String textMessage, InlineKeyboardMarkup inlineKeyboardMarkup) {
-        BotApiMethod editedReply = null;
+    public void editMessageWithKeyboard(Long chat_id, Integer messageID, String textMessage, InlineKeyboardMarkup inlineKeyboardMarkup) {
         EditMessageText et = new EditMessageText()
                 .setChatId(chat_id)
                 .setMessageId(messageID)
@@ -135,7 +135,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             e.printStackTrace();
         }
     }
-    private ReplyKeyboardMarkup getMenuBot () {
+    private ReplyKeyboardMarkup getMenuBot() {
         ReplyKeyboardMarkup replyKeyboardMarkup = new ReplyKeyboardMarkup();
         KeyboardRow row1 = new KeyboardRow();
         row1.add("Balance");
@@ -145,7 +145,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
         replyKeyboardMarkup.setKeyboard(keyboardRowList);
         return replyKeyboardMarkup;
     }
-    private SendMessage getTypeOperation (Update update) {
+    private SendMessage getTypeOperation(Update update) {
         InlineKeyboardMarkup markup = new InlineKeyboardMarkup();
 
         InlineKeyboardButton inlineKeyboardButton1 = new InlineKeyboardButton();

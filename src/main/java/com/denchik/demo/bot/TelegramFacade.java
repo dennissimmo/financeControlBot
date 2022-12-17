@@ -1,23 +1,16 @@
 package com.denchik.demo.bot;
 
 import com.denchik.demo.bot.handlers.callbackquery.CallbackQueryFacade;
+import com.denchik.demo.model.User;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
-import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
 import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.Update;
-import com.denchik.demo.model.User;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
-import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.util.ArrayList;
-import java.util.List;
 import java.util.regex.Pattern;
 
 @Log4j2
@@ -27,12 +20,12 @@ public class TelegramFacade {
     private BotStateContext botStateContext;
     private ReplyMessagesService replyMessagesService;
     private CallbackQueryFacade callbackQueryFacade;
-    public TelegramFacade(UserService userService,ReplyMessagesService replyMessagesService,BotStateContext botStateContext, CallbackQueryFacade callbackQueryFacade) {
+    public TelegramFacade(UserService userService, ReplyMessagesService replyMessagesService, BotStateContext botStateContext, CallbackQueryFacade callbackQueryFacade) {
         this.userService = userService;
-        this.replyMessagesService =replyMessagesService;
+        this.replyMessagesService = replyMessagesService;
         this.botStateContext = botStateContext;
         this.callbackQueryFacade = callbackQueryFacade;
-        System.out.println("Внедряем User Service в Telegram Facade");
+        System.out.println("Inject User Service in Telegram Facade");
     }
     /**
      * Метод приймає апдейт від користувача, обробляє повідомлення яке міститься в апдейті, визначає
@@ -47,7 +40,7 @@ public class TelegramFacade {
         if (message != null && message.hasText()) {
             Long chat_id = update.getMessage().getChatId();
             String textMessage = message.getText();
-            log.info("New message from User: {} , chat_id {} with text {}",message.getFrom(),message.getChatId(),message.getText());
+            log.info("New message from User: {} , chat_id {} with text {}", message.getFrom(), chat_id, textMessage);
             replyMessage =
                     handleInputMessageText(message);
         } else if (update.hasCallbackQuery()) {
@@ -77,51 +70,9 @@ public class TelegramFacade {
      * @return
      */
     public SendMessage handleInputMessageText(Message message) {
-        BotState botState;
         User user;
-        SendMessage reply = null;
-        String textMessage = message.getText();
-            switch (textMessage) {
-                case "/start":
-                    botState = BotState.START_STATE;
-                    break;
-                case "/list" :
-                    botState = BotState.LIST_OPERATION;
-                    break;
-                case "/balance" :
-                    botState = BotState.GET_BALANCE;
-                    break;
-                case "/report" :
-                    botState = BotState.REPORT;
-                    break;
-                case "/export" :
-                    botState = BotState.EXPORT;
-                    break;
-                case "/setbal" :
-                    botState = BotState.SET_BALANCE;
-                    break;
-                case "/delete":
-                    botState = BotState.DELETE_CONNECTION;
-                    break;
-                case "/lang" :
-                    botState = BotState.LANGUAGE_CHOOSE;
-                    break;
-                case "/help" :
-                    botState = BotState.HELP;
-                    break;
-                default:
-                    user = userService.findUserByChatId(message.getChatId());
-                    if (user == null) {
-                        botState = BotState.NONE;
-                    } else {
-                        if (user.getState_id() != null) {
-                            botState = BotState.getBotStateById(user.getState_id());
-                        } else {
-                            botState = BotState.NONE;
-                        }
-                        break;
-                    }
-            }
+        SendMessage reply;
+        BotState botState = this.getUserStateByMessage(message);
         try {
             user = userService.findUserByChatId(message.getChatId());
             if (user != null) {
@@ -133,12 +84,55 @@ public class TelegramFacade {
 
         } catch (Exception e) {
             reply = new SendMessage(message.getChatId(),"Can`t handle update on state : " + botState);
-            log.info("Can't handle state : {}",botState);
+            log.info("Can't handle state : {}", botState);
             e.printStackTrace();
         }
         return reply;
     }
 
+    private BotState getUserStateByMessage(Message message) {
+        BotState botState;
+        String textMessage = message.getText();
+        switch (textMessage) {
+            case "/start":
+                botState = BotState.START_STATE;
+                break;
+            case "/list" :
+                botState = BotState.LIST_OPERATION;
+                break;
+            case "/balance" :
+                botState = BotState.GET_BALANCE;
+                break;
+            case "/report" :
+                botState = BotState.REPORT;
+                break;
+            case "/export" :
+                botState = BotState.EXPORT;
+                break;
+            case "/setbal" :
+                botState = BotState.SET_BALANCE;
+                break;
+            case "/delete":
+                botState = BotState.DELETE_CONNECTION;
+                break;
+            case "/lang" :
+                botState = BotState.LANGUAGE_CHOOSE;
+                break;
+            case "/help" :
+                botState = BotState.HELP;
+                break;
+            default:
+                User user = userService.findUserByChatId(message.getChatId());
+                if (user == null) {
+                    botState = BotState.NONE;
+                } else {
+                    botState = user.getState_id() != null ? BotState.getBotStateById(user.getState_id()) : BotState.NONE;
+                }
+                break;
+        }
+
+        return botState;
+    }
     private boolean isOperationAmount(String messageText) {
         String regex = "\\d+";
         Pattern digits = Pattern.compile(regex);

@@ -5,26 +5,16 @@ import com.denchik.demo.model.*;
 import com.denchik.demo.service.*;
 import com.denchik.demo.utils.Emojis;
 import lombok.extern.log4j.Log4j2;
-import org.checkerframework.checker.units.qual.C;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
-import org.telegram.telegrambots.meta.api.methods.BotApiMethod;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.DeleteMessage;
-import org.telegram.telegrambots.meta.api.methods.updatingmessages.EditMessageText;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
-import org.telegram.telegrambots.meta.api.objects.Update;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
-import java.io.Serializable;
-import java.sql.Date;
 import java.sql.Timestamp;
 import java.text.DateFormatSymbols;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalDate;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -102,17 +92,17 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 List<Operation> userOperations = operationService.getUserOperations(currentUser);
                 //displayOperationList(userOperations);
                 //replyMessagesService.getReplyText("reply.category.chooseCategory.income",Emojis.EURO,operation.getAmount())
-              controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseCategory.income", Emojis.WRITINGHANDLE,operation.getAmount()),keyboardMarkup);
+              controlMoneyTelegramBot.editMessageWithKeyboard(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseCategory.income", Emojis.WRITINGHANDLE,operation.getAmount()),keyboardMarkup);
             } else if (callBackData.equals(EXPENSE)) {
                 List<Category> expenseCategories = categoryService.getExpenses(currentUser.getLanguage_code());
                 InlineKeyboardMarkup keyboardMarkup = getListCategories(expenseCategories,operation);
                 operation.setTypeOperation(typeOperationService.getTypeByName(EXPENSE));
                 operationService.saveOperation(operation);
-                controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseCategory.expense", Emojis.WRITINGHANDLE,operation.getAmount()),keyboardMarkup);
+                controlMoneyTelegramBot.editMessageWithKeyboard(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseCategory.expense", Emojis.WRITINGHANDLE,operation.getAmount()),keyboardMarkup);
             } else if (callBackData.equals(CANCEL)) {
                 Balance balance = currentUser.getBalance();
                 String replyCancel = callbackQuery.getMessage().getText() + "\n - \n" + replyMessagesService.getReplyText("reply.operation.cancel.canceled",Emojis.EMPTYCANCEL);
-                controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyCancel,null);
+                controlMoneyTelegramBot.editMessageWithKeyboard(chat_id,callBackMessageId,replyCancel,null);
                 if (Operation.isExpense(operation)) {
                     balance.upBalance(operation.getAmount());
                 } else {
@@ -121,7 +111,7 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 balanceService.saveBalance(balance);
                 operationService.deleteOperation(operationService.findOperationById(idHandledOperation));
             } else if (callBackData.equals(BACK)){
-                controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseTypeOperation", Emojis.RECORD),getChooseOperationReplyInlineKeyboard(idHandledOperation));
+                controlMoneyTelegramBot.editMessageWithKeyboard(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.category.chooseTypeOperation", Emojis.RECORD),getChooseOperationReplyInlineKeyboard(idHandledOperation));
             } else if (callBackData.contains(CATEGORY)){
                 int idChooseCategory = Integer.parseInt(callBackText.split("\\|")[3]);
                 Category category = categoryService.findCategoryById(idChooseCategory);
@@ -143,9 +133,9 @@ public class NewOperationQueryHandler implements CallbackQueryHandler{
                 }
                 //System.out.println("Type category : " + category.getTypeCategory().getName_type() + replyMessagesService.getReplyText("reply.typeOperation.incomes").trim());
                 if (operation.getTypeOperation().getName().equals("EXPENSE")) {
-                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
+                    controlMoneyTelegramBot.editMessageWithKeyboard(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.expense", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 } else {
-                    controlMoneyTelegramBot.editMessage(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.income", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
+                    controlMoneyTelegramBot.editMessageWithKeyboard(chat_id,callBackMessageId,replyMessagesService.getReplyText("reply.operation.successful.add.income", operation.getAmount(),category.getName(),dateOperationFormatted,Emojis.CHECK),cancelOperation(idHandledOperation));
                 }
                 // Change balance after operation added
                 Balance userBalance = currentUser.getBalance();
