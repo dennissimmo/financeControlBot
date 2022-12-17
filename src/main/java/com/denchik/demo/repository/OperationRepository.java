@@ -17,7 +17,7 @@ public interface OperationRepository extends JpaRepository<Operation,Long> {
     List<Operation> findOperationByTypeOperationAndUserOrderByAmount(TypeOperation typeOperation, User user);
     List<Operation> findTop5ByOrderByCreateAtDesc ();
     List<Operation> findOperationsByUserAndCategoryNotNullOrderByCreateAt(User user);
-    @Query(value = "SELECT o. * FROM operation o WHERE o.user_id = ?1 AND date_part('month',create_at) = ?3 AND date_part('year',create_at) = ?4 and o.category_id IS NOT NULL ORDER BY o.create_at DESC limit ?2",nativeQuery = true)
+    @Query(value = "SELECT o. * FROM operation o WHERE o.user_id = ?1 AND date_part('month', create_at) = ?3 AND date_part('year',create_at) = ?4 and o.category_id IS NOT NULL ORDER BY o.create_at DESC limit ?2",nativeQuery = true)
     List<Operation> findLastUserOperations (int user_id,int limit,int month, int year);
     Operation findTopByOrderByCreateAt ();
     Operation findTopByOrderById ();

@@ -120,6 +120,7 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             e.printStackTrace();
         }
     }
+
     public void editMessage (Long chat_id, Integer messageID, String textMessage, InlineKeyboardMarkup inlineKeyboardMarkup) {
         BotApiMethod editedReply = null;
         EditMessageText et = new EditMessageText()

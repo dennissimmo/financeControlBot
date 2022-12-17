@@ -33,7 +33,7 @@ import java.util.stream.Collectors;
 
 @Component
 @Log4j2
-public class ExportCommandHandler implements InputMessageHandler{
+public class ExportCommandHandler implements InputMessageHandler {
     private final DateTimeFormatter DATE_TIME_FORMAT = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
     private UserService userService;
     private ReplyMessagesService replyMessagesService;
@@ -50,22 +50,27 @@ public class ExportCommandHandler implements InputMessageHandler{
 
     @Override
     public SendMessage handle(Message message) {
+        System.out.println("new export message");
         User currentUser = userService.findUserByChatId(message.getChatId());
         List<Operation> userOperations = operationService.findOperationsByUser(currentUser);
         List<Category> distinctOperationCategory = userOperations.stream()
                 .map(operation -> operation.getCategory())
                 .distinct()
                 .collect(Collectors.toList());
-        if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {
-            OperationExcelExport export = new OperationExcelExport(userOperations, distinctOperationCategory, operationService, currentUser);
-            LocalDateTime dateObj = LocalDateTime.now();
-            String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
-            String fileName = "ControlMoneyBot_" + currentDataTime;
-            currentUser.setState_id(BotState.WAIT_OPERATION);
-            userService.saveUser(currentUser);
-            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
-            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
-        }
+        currentUser.setState_id(BotState.WAIT_OPERATION);
+        userService.saveUser(currentUser);
+//        if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {
+//            OperationExcelExport export = new OperationExcelExport(userOperations, distinctOperationCategory, operationService, currentUser);
+//            LocalDateTime dateObj = LocalDateTime.now();
+//            String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
+//            String fileName = "ControlMoneyBot_" + currentDataTime;
+//            currentUser.setState_id(BotState.WAIT_OPERATION);
+//            log.info("before saving user");
+//            userService.saveUser(currentUser);
+////            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
+//            log.info("rendering excel finished");
+//            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
+//        }
         return replyMessagesService.getReplyMessage(message.getChatId(),"reply.excel.success", Emojis.POINT_UP);
     }
 

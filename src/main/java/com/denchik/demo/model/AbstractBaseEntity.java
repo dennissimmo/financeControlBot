@@ -11,7 +11,6 @@ import javax.persistence.*;
 
 @Getter
 @Setter
-
 public class AbstractBaseEntity {
     public static final int START_SEQ = 0;
 

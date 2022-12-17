@@ -7,7 +7,7 @@ DROP TABLE IF EXISTS category;
 DROP TABLE IF EXISTS type_category;
 DROP TABLE IF EXISTS source_info;
 DROP SEQUENCE IF EXISTS global_seq cascade ;
-CREATE SEQUENCE global_seq START WITH 100000;
+CREATE SEQUENCE global_seq START WITH 0;
 DROP SEQUENCE IF EXISTS hibernate_sequence cascade ;
 CREATE SEQUENCE hibernate_sequence START 1;
 CREATE TABLE source_info
@@ -66,5 +66,4 @@ CREATE TABLE operation
     user_id INTEGER REFERENCES users(id),
     source_id INTEGER REFERENCES source_info(id),
     current_balance DOUBLE PRECISION
-
 );
