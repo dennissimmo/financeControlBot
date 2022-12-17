@@ -16,6 +16,13 @@ public class BotStateContext {
     public BotStateContext(List<InputMessageHandler> messageHandlers) {
         messageHandlers.forEach(handler -> this.messageHandlers.put(handler.getHandlerName(), handler));
     }
+
+    /**
+     * Return message handler by bot state
+     * @param currentState
+     * @param message
+     * @return
+     */
     public SendMessage processInputMessage(BotState currentState, Message message) {
         InputMessageHandler currentMessageHandler = findMessageHandler(currentState);
         return currentMessageHandler.handle(message);

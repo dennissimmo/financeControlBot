@@ -9,7 +9,6 @@ import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;
 import org.telegram.telegrambots.meta.api.objects.CallbackQuery;
-import org.telegram.telegrambots.meta.api.objects.Message;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.InlineKeyboardMarkup;
 import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.InlineKeyboardButton;
 
@@ -122,7 +121,7 @@ public class GenerateReportQueryHandler implements CallbackQueryHandler {
         currentUser.setState_id(BotState.WAIT_OPERATION);
         userService.saveUser(currentUser);
         log.info("Finish Handle");
-        controlMoneyTelegramBot.editMessage(chatId,messageId,response.toString(),changeMonthKeyboard(indexCurrentMonth,currentYear, nextOrPrevious,localeTag,getDateForHeader));
+        controlMoneyTelegramBot.editMessageWithKeyboard(chatId,messageId,response.toString(),changeMonthKeyboard(indexCurrentMonth,currentYear, nextOrPrevious,localeTag,getDateForHeader));
         return new SendMessage();
     }
     public String getNameMonthByLocale (String localeTag,Date date,Month month) {
