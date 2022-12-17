@@ -4,7 +4,7 @@ import javax.persistence.*;
 
 @Entity
 @Table(name = "balance")
-public class Balance extends AbstractBaseEntity{
+public class Balance extends AbstractBaseEntity {
     private Double amount;
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "source_info_id",nullable = false)

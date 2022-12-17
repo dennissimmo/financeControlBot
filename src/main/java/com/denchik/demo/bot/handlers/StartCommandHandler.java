@@ -1,12 +1,10 @@
 package com.denchik.demo.bot.handlers;
 
 import com.denchik.demo.bot.BotState;
-import com.denchik.demo.model.Balance;
 import com.denchik.demo.model.User;
 import com.denchik.demo.service.ReplyMessagesService;
 import com.denchik.demo.service.UserService;
 import com.denchik.demo.utils.Emojis;
-import com.vdurmont.emoji.EmojiParser;
 import lombok.extern.log4j.Log4j2;
 import org.springframework.stereotype.Component;
 import org.telegram.telegrambots.meta.api.methods.send.SendMessage;

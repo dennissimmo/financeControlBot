@@ -130,6 +130,7 @@ public class TelegramFacade {
                 userService.saveUser(user);
             }
             reply = botStateContext.processInputMessage(botState, message);
+
         } catch (Exception e) {
             reply = new SendMessage(message.getChatId(),"Can`t handle update on state : " + botState);
             log.info("Can't handle state : {}",botState);
