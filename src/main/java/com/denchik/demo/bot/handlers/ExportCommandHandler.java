@@ -40,7 +40,7 @@ public class ExportCommandHandler implements InputMessageHandler {
     private OperationService operationService;
     private CategoryService categoryService;
     private ControlMoneyTelegramBot controlMoneyTelegramBot;
-    public ExportCommandHandler(UserService userService, ReplyMessagesService replyMessagesService,OperationService operationService,CategoryService categoryService,ControlMoneyTelegramBot controlMoneyTelegramBot) {
+    public ExportCommandHandler(UserService userService, ReplyMessagesService replyMessagesService,OperationService operationService, CategoryService categoryService, ControlMoneyTelegramBot controlMoneyTelegramBot) {
         this.userService = userService;
         this.replyMessagesService = replyMessagesService;
         this.operationService = operationService;
@@ -57,20 +57,20 @@ public class ExportCommandHandler implements InputMessageHandler {
                 .map(operation -> operation.getCategory())
                 .distinct()
                 .collect(Collectors.toList());
-        currentUser.setState_id(BotState.WAIT_OPERATION);
-        userService.saveUser(currentUser);
-//        if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {
-//            OperationExcelExport export = new OperationExcelExport(userOperations, distinctOperationCategory, operationService, currentUser);
-//            LocalDateTime dateObj = LocalDateTime.now();
-//            String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
-//            String fileName = "ControlMoneyBot_" + currentDataTime;
-//            currentUser.setState_id(BotState.WAIT_OPERATION);
-//            log.info("before saving user");
-//            userService.saveUser(currentUser);
-////            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
-//            log.info("rendering excel finished");
-//            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
-//        }
+//        currentUser.setState_id(BotState.WAIT_OPERATION);
+//        userService.saveUser(currentUser);
+        if (currentUser.getState_id() == BotState.EXPORT.ordinal()) {
+            OperationExcelExport export = new OperationExcelExport(userOperations, distinctOperationCategory, operationService, currentUser);
+            LocalDateTime dateObj = LocalDateTime.now();
+            String currentDataTime = dateObj.format(DATE_TIME_FORMAT);
+            String fileName = "ControlMoneyBot_" + currentDataTime;
+            currentUser.setState_id(BotState.WAIT_OPERATION);
+            log.info("before saving user");
+            userService.saveUser(currentUser);
+            controlMoneyTelegramBot.createDocument(message.getChatId(), fileName, export.export());
+            log.info("rendering excel finished");
+            log.info("User : {} Exported report: {}", currentUser.toString(), fileName);
+        }
         return replyMessagesService.getReplyMessage(message.getChatId(),"reply.excel.success", Emojis.POINT_UP);
     }
 

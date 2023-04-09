@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Component
 
@@ -50,11 +51,11 @@ public class OperationService {
     }
     @Transactional(readOnly = true)
     public List<Operation> getUserOperationsOrdered(User user) {
-        return operationRepository.findOperationsByUserAndCategoryNotNullOrderByCreateAt(user);
+        return operationRepository.findOperationsByUserAndCategoryNotNullOrderByCreateAtDesc(user);
     }
     @Transactional(readOnly = true)
     public List<Operation> findOperationByCategoryAndUser(Category category, User user) {
-        return operationRepository.findOperationsByCategoryAndUser(category, user);
+        return operationRepository.findOperationsByCategoryAndUserOrderByCreateAtDesc(category, user);
     }
     @Transactional(readOnly = true)
     public List<Operation> getOperationByDay() {
