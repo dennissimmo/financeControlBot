@@ -161,7 +161,7 @@ public class ReportBuilder {
     }
 
     public Date getDateFromLocalDate(int currentYear, int indexCurrentMonth) {
-        LocalDate myLocalDate = LocalDate.of(currentYear,indexCurrentMonth,1);
+        LocalDate myLocalDate = LocalDate.of(currentYear, indexCurrentMonth,1);
         Date date = null;
         try {
             date = defaultFormat.parse(myLocalDate.toString());
