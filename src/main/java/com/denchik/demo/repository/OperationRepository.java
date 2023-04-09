@@ -15,8 +15,7 @@ public interface OperationRepository extends JpaRepository<Operation,Long> {
     List<Operation> findAllByCategory (Category category);
     List<Operation> findOperationByUserAndCategoryNotNull(User user);
     List<Operation> findOperationByTypeOperationAndUserOrderByAmount(TypeOperation typeOperation, User user);
-    List<Operation> findTop5ByOrderByCreateAtDesc ();
-    List<Operation> findOperationsByUserAndCategoryNotNullOrderByCreateAt(User user);
+    List<Operation> findOperationsByUserAndCategoryNotNullOrderByCreateAtDesc(User user);
     @Query(value = "SELECT o. * FROM operation o WHERE o.user_id = ?1 AND date_part('month', create_at) = ?3 AND date_part('year',create_at) = ?4 and o.category_id IS NOT NULL ORDER BY o.create_at DESC limit ?2",nativeQuery = true)
     List<Operation> findLastUserOperations (int user_id,int limit,int month, int year);
     Operation findTopByOrderByCreateAt ();
@@ -26,7 +25,8 @@ public interface OperationRepository extends JpaRepository<Operation,Long> {
     List<Operation> getSumOperationByCategoryPerMonth (int userId);
     @Query(value = "SELECT sum(operation.amount) FROM operation WHERE operation.type_operation_id = ?1 AND operation.user_id= ?2 AND date_part('month',operation.create_at) = ?3 AND date_part('year',operation.create_at) = ?4",nativeQuery = true)
     double sumAmountOperationsForOperationType(TypeOperation typeOperation,User user,int month,int year);
-    List<Operation> findOperationsByCategoryAndUser (Category category,User user);
+    List<Operation> findOperationsByCategoryAndUser(Category category,User user);
+    List<Operation> findOperationsByCategoryAndUserOrderByCreateAtDesc(Category category,User user);
     @Query("SELECT sum(o.amount) FROM Operation o WHERE o.category= :category AND o.user= :user")
     double sumAmountOperationsForCategory (Category category,User user);
     @Query("SELECT c FROM Category c INNER join fetch c.typeCategory as typeCategory where typeCategory.name_type= :name_type ")

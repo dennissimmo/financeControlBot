@@ -17,6 +17,8 @@ import org.telegram.telegrambots.meta.api.objects.replykeyboard.buttons.Keyboard
 import org.telegram.telegrambots.meta.exceptions.TelegramApiException;
 
 import java.io.ByteArrayInputStream;
+import java.io.ByteArrayOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
@@ -110,15 +112,19 @@ public class ControlMoneyTelegramBot extends TelegramWebhookBot {
             e.printStackTrace();
         }
     }
-    public void createDocument(Long chatId, String fileName, ByteArrayInputStream byteArray ) {
-        InputStream stream = byteArray;
+    public void createDocument(Long chatId, String fileName, ByteArrayOutputStream byteArray ) {
+        InputStream stream = new ByteArrayInputStream(byteArray.toByteArray());
+
         SendDocument document = new SendDocument();
         document.setChatId(chatId.toString());
         document.setDocument(new InputFile(stream, String.format("%s.xlsx", fileName)));
         try {
+            byteArray.close();
             execute(document);
         } catch (TelegramApiException e) {
             e.printStackTrace();
+        } catch (IOException e) {
+            throw new RuntimeException(e);
         }
     }
 
